@@ -1,0 +1,11 @@
+/* Wiki
+   ========================================================================== */
+@import '~@alifd/biz-anchor/lib/main.scss';
+
+.lake-engine-view ol[data-lake-indent="1"], .lake-engine-view ul[data-lake-indent="1"], .lake-engine ol[data-lake-indent="1"], .lake-engine ul[data-lake-indent="1"]
+{
+  padding-left: 2em;
+}
+.lake-engine-view ol[data-lake-indent="2"], .lake-engine-view ul[data-lake-indent="2"], .lake-engine ol[data-lake-indent="2"], .lake-engine ul[data-lake-indent="2"] {
+  padding-left: 4em;
+}
