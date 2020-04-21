@@ -63,7 +63,7 @@ class DocumentView extends Component {
           });
         } else {
           throw new Error(
-            `There was a problem fetching document for locator: ${locator}`
+            `There was a problem fetching document for locator: ${locator}`,
           );
         }
       })
@@ -84,7 +84,7 @@ class DocumentView extends Component {
     if (doc) {
       this.setState({
         doc,
-      })
+      });
     }
   }
 
@@ -99,24 +99,26 @@ class DocumentView extends Component {
         this.setState({
           locator,
           doc,
-        })
+        });
       }
     }
   }
 
   render() {
     const { doc, loadingDocument, errorDocument, toc } = this.state;
-    const { namespace, showEditor } = this.props;
+    const { namespace, showEditor, baseUrl } = this.props;
+    const yuqueBase = baseUrl && baseUrl.includes('api') && baseUrl.split('api')[0] || 'https:www.yuque.com/';
+    console.log('yuqueBase: ', yuqueBase);
     setTimeout(() => {
       if (!doc) return;
       if (!toc.doc || (toc.locator !== doc.locator)) this.content = document.getElementById(`document-content-${doc.locator}`);
       if (this.content && (!toc || (toc.locator !== doc.locator))) this.setState({
         toc: {
-          doc: <div style={{ position: 'fixed', top: 80, right: 50 }}>
+          doc: <div style={{ position: 'fixed', top: 100, right: 50 }}>
             <Anchor style={{ width: 180 }} noHash content={() => this.content} />
           </div>,
-          locator: doc.locator
-        }
+          locator: doc.locator,
+        },
       });
     });
 
@@ -130,7 +132,7 @@ class DocumentView extends Component {
           <div>
             <h1 id="document-title" className="document__title">
               {doc.title}
-              {showEditor && <Balloon trigger={<a target="_blank" href={`https:www.yuque.com/${namespace}/${doc.locator}`} style={{ marginLeft: 20, color: '#666666' }}><Icon size={'small'} type='edit'/></a>} closable={false}>
+              {showEditor && <Balloon trigger={<a rel="noopener noreferrer" target="_blank" href={`${yuqueBase}${namespace}/${doc.locator}`} style={{ marginLeft: 20, color: '#666666' }}><Icon size="small" type='edit'/></a>} closable={false}>
                   在语雀中编辑
               </Balloon>}
             </h1>

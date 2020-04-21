@@ -8,10 +8,10 @@ import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 import DocumentSearch from './document-search/index';
 import DocShowNew from './document-view/index';
 
+import './index.scss';
+
 const path = p => join('', p);
 const { Item, SubNav } = Nav;
-
-import './index.scss';
 
 class Container extends React.Component {
   static propTypes = {
@@ -21,6 +21,7 @@ class Container extends React.Component {
   static defaultProps = {
     data: {},
   };
+
   constructor(props, context) {
     super(props, context);
     const { data } = this.props;
@@ -113,7 +114,7 @@ class Container extends React.Component {
   renderDirectories(directories = []) {
     const { categoryMap, categoryOrder } = this.processDirectories(directories);
     const directoryElements = categoryOrder.map(cat =>
-      this.renderCategory(cat, categoryMap[cat])
+      this.renderCategory(cat, categoryMap[cat]),
     );
     return this.insertDividers(directoryElements);
   }
@@ -134,7 +135,7 @@ class Container extends React.Component {
       locator,
     } = this.state;
     const { data, showSearch, lazyLoad, darkMode } = this.props;
-    const { api, view, searchAPI, title, logo, onlyDoc, noHeader } = data;
+    const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage } = data;
     const { params } = this.props.match;
     const currentDocument = this.documents[locator].document;
     const selectedKeys = params && params.name ? [params.name] : [];
@@ -146,7 +147,7 @@ class Container extends React.Component {
               </Message>
           )}
           <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
-                      namespace={data.namespace} showEditor={data.showEditor} doc={currentDocument} />
+                      namespace={data.namespace} showEditor={data.showEditor} doc={currentDocument} baseUrl={data.baseUrl} />
       </div>;
     }
 
@@ -155,13 +156,13 @@ class Container extends React.Component {
         <Shell.Navigation
           direction="hoz"
           className="header"
-          style={{ background: darkMode ? (data.blackColor || 'black') : (data.lightColor || '#ffffff00'), padding: '0 16px' }}>
-            <Box spacing={70} direction="row" align="center" className="header-simple" width={'1200px'} style={{
-              margin: '0 auto'
+          style={{ background: darkMode ? (data.blackColor || 'black') : (data.lightColor || '#ffffff00') }}>
+            <Box spacing={40} direction="row" align="center" className="header-simple" width="1200px" style={{
+              margin: '0 auto',
             }}>
-                {this.header(logo, view)}
+                {this.header(logo, homepage)}
                 <Box justify="center" className="title">
-                    <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}>{title}</a>
+                  <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}><span className="header-title">{title}</span></a>
                 </Box>
                 {showSearch ? <Box justify="center" >
                   <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} />
@@ -175,13 +176,14 @@ class Container extends React.Component {
         </Shell.LocalNavigation>
 
         <Shell.Content>
-          <div style={{ background: '#fff', height: 'calc(100vh - 60px)', paddingRight: '230px'}}>
+          <div style={{ background: '#fff', paddingRight: '230px'}}>
             {errorDirectories && (
               <Message title="Error" type="error">
                 {errorDirectories.message}
               </Message>
             )}
-            <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator} namespace={data.namespace} doc={currentDocument} showEditor={data.showEditor} />
+            <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
+                        namespace={data.namespace} showEditor={data.showEditor} doc={currentDocument} baseUrl={data.baseUrl} />
           </div>
         </Shell.Content>
       </Shell>

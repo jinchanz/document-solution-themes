@@ -1,32 +1,3 @@
-@font-face {
-  font-family: "Roboto";
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.eot");
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.ttf") format("truetype");
-  font-weight: 200; }
-
-@font-face {
-  font-family: "Roboto";
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.eot");
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.ttf") format("truetype");
-  font-weight: 300; }
-
-@font-face {
-  font-family: "Roboto";
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.eot");
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.ttf") format("truetype");
-  font-weight: 400; }
-
-@font-face {
-  font-family: "Roboto";
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.eot");
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.ttf") format("truetype");
-  font-weight: 500; }
-
-@font-face {
-  font-family: "Roboto";
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.eot");
-  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.ttf") format("truetype");
-  font-weight: 700; }
 body {
   margin: 0;
   font-family: Roboto,"PingFang SC","Helvetica Neue",Arial,Helvetica,sans-serif;
@@ -41,61 +12,57 @@ body {
   background: transparent;
 
   &-limit {
-    width: 1200px;
-    height: 60px;
-    margin: 0 auto;
     position: relative;
+    width: 1200px;
+    margin: 0 auto;
   }
 
   &-logo {
-    display: inline-block;
-    height: 60px;
-
+    a {
+      line-height: 0;
+    }
     img {
-      height: 40px;
-      margin: 10px 0;
+      height: 31px;
     }
   }
 
   &-simple {
     display: flex;
-    width: 100%;
     align-items: center;
+    width: 100%;
+  }
+
+  &-title {
+    font-size: 12pt;
   }
 
   &-item {
+    margin-left: 30px;
     color: #fff;
-    margin-left: 70px;
   }
 }
 
 .next-shell-light .next-shell-header {
   position: fixed;
   color: #fff;
-  height: 60px;
-  background: transparent;
   border-bottom: 1px solid #E6E7EB;
   -webkit-box-shadow: none;
+  padding-left: 40px;
   box-shadow: none;
-  padding: 0;
 }
 .next-shell-light .next-shell-header .next-shell-navigation {
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
   justify-content: flex-end;
-  height: 60px;
-  line-height: 60px;
   margin: 0;
-  padding:0;
  }
 .next-shell-light .next-shell-main {
-  background: #ffffff;
-  margin-top: 60px;
+  margin-top: $shell-light-header-height;
+  background: #fff;
 }
 .next-shell-light .next-shell-aside .next-shell-localnavigation {
   width: 283px;
-  padding: 0;
   background: #fafafa;
   border-right: 1px solid #E6E7EB;
   -webkit-box-shadow: none;
@@ -103,7 +70,6 @@ body {
 }
 
 .next-shell-light .next-shell-main .next-shell-content {
-  padding: 0;
 }
 
 .next-nav.next-normal .next-menu-sub-menu .next-menu-item {
@@ -111,40 +77,40 @@ body {
 }
 
 .wiki {
-  font-size: 14px;
-  line-height: 2;
-  color: #314659;
   margin: 0 auto;
   padding: 40px;
+  color: #314659;
+  font-size: 14px;
+  line-height: 2;
 }
 
 .wiki h1 {
-  font-size: 28px;
   margin: 28px auto 20px;
+  font-size: 28px;
 }
 
 .wiki h2 {
-  font-size: 24px;
   margin: 24px auto 16px;
+  font-size: 24px;
 }
 
 .wiki h3 {
-  font-size: 20px;
   margin: 20px auto 12px;
+  font-size: 20px;
 }
 
 .wiki h4 {
-  font-size: 16px;
   margin: 16px auto 8px;
+  font-size: 16px;
 }
 
 .wiki h1,
 .wiki h2,
 .wiki h3,
 .wiki h4 {
+  color: #0d1a26;
   font-weight: normal;
   line-height: 1;
-  color: #0d1a26;
 }
 
 .wiki h1:first-child,
@@ -155,8 +121,8 @@ body {
 }
 
 .wiki p {
-  font-size: 14px;
   margin: 14px 0;
+  font-size: 14px;
 }
 
 .wiki strong {
@@ -169,18 +135,18 @@ body {
 
 .wiki code {
   padding: 2px 4px;
-  font-size: 90%;
   color: #c7254e;
+  font-size: 90%;
   background-color: #f9f2f4;
   border-radius: 2px;
 }
 
 .wiki pre {
-  background: #f2f4f5;
+  margin: 16px 0;
+  padding: 12px 20px;
   color: #314659;
   font-size: 12px;
-  padding: 12px 20px;
-  margin: 16px 0;
+  background: #f2f4f5;
   border-radius: 3px;
   overflow: auto;
   direction: ltr;
@@ -267,7 +233,7 @@ body {
 .wiki .document__toc {
   @media screen and (min-width: 1400px) {
     position: fixed;
-    right: 20px;
     top: 80px;
+    right: 20px;
   }
 }

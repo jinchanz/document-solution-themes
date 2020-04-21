@@ -10,6 +10,7 @@ coverage/
 .eslintcache
 .vscode/
 .tmp/
+.idea/
 
 build
 blocks/**/lib/
