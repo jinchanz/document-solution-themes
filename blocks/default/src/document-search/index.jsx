@@ -135,7 +135,7 @@ class DocumentSearch extends React.Component {
   renderResultsRow = (
     { title, content, locator, groupId },
     index,
-    searchTerms
+    searchTerms,
   ) => (
     <MenuItem
       key={`${title}-${index}`}
@@ -178,7 +178,7 @@ class DocumentSearch extends React.Component {
       );
     } else if (categories.length) {
       menuInner = categories.map(name =>
-        this.renderResultsCategory(name, searchResults[name], searchTerms)
+        this.renderResultsCategory(name, searchResults[name], searchTerms),
       );
     } else {
       menuInner = (
@@ -208,12 +208,13 @@ class DocumentSearch extends React.Component {
       searchTerms,
       error,
     } = this.state;
-    const { darkMode } = this.props;
+    const { darkMode, placeholder } = this.props;
     const searchType = !darkMode ? 'normal' : 'dark';
     return (
       <div>
         <Search
           type={searchType}
+          placeholder={placeholder || '请输入关键词'}
           shape="simple"
           className="help-search__input"
           onSearch={() => this.handleSearch.flush()}
@@ -233,7 +234,7 @@ class DocumentSearch extends React.Component {
               loading,
               searchString,
               searchTerms,
-              error
+              error,
             )
             : null}
         </Overlay>

@@ -135,7 +135,7 @@ class Container extends React.Component {
       locator,
     } = this.state;
     const { data, showSearch, lazyLoad, darkMode } = this.props;
-    const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage } = data;
+    const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage, searchPlaceholder } = data;
     const { params } = this.props.match;
     const currentDocument = this.documents[locator].document;
     const selectedKeys = params && params.name ? [params.name] : [];
@@ -165,7 +165,7 @@ class Container extends React.Component {
                   <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}><span className="header-title">{title}</span></a>
                 </Box>
                 {showSearch ? <Box justify="center" >
-                  <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} />
+                  <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
                 </Box> : null}
             </Box>
         </Shell.Navigation>

@@ -108,7 +108,6 @@ class DocumentView extends Component {
     const { doc, loadingDocument, errorDocument, toc } = this.state;
     const { namespace, showEditor, baseUrl } = this.props;
     const yuqueBase = baseUrl && baseUrl.includes('api') && baseUrl.split('api')[0] || 'https:www.yuque.com/';
-    console.log('yuqueBase: ', yuqueBase);
     setTimeout(() => {
       if (!doc) return;
       if (!toc.doc || (toc.locator !== doc.locator)) this.content = document.getElementById(`document-content-${doc.locator}`);

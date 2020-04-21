@@ -1,10 +1,11 @@
 .help-search__input {
     max-width: 268px;
+    line-height: 0;
 }
 
 .help-search__inner {
-    max-width: 600px;
     width: 400px;
+    max-width: 600px;
     max-height: 400px;
     overflow-y: auto;
 }
