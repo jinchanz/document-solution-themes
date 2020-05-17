@@ -1,0 +1,45 @@
+{
+  "name": "@ablula/default-blog-theme",
+  "version": "0.0.5",
+  "description": "blog theme for ablula document",
+  "files": [
+    "src/",
+    "build/",
+    "screenshot.png"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "ice",
+    "react",
+    "block"
+  ],
+  "scripts": {
+    "start": "build-scripts start",
+    "build": "build-scripts build",
+    "screenshot": "screenshot -l -s mountNode",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@alifd/biz-anchor": "^1.1.7",
+    "@alifd/next": "^1.19.23",
+    "axios": "^0.19.2",
+    "highlight-words-core": "^1.2.2",
+    "moment": "^2.24.0",
+    "prop-types": "^15.5.8",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "@alib/build-scripts": "^0.1.8",
+    "@ice/screenshot": "^0.1.1",
+    "build-plugin-block": "^1.0.0",
+    "build-plugin-fusion": "^0.1.0",
+    "build-plugin-moment-locales": "^0.1.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
+  },
+  "blockConfig": {
+    "name": "ablula-default-blog",
+    "title": "Ablula 默认博客模板",
+    "category": "Information"
+  }
+}
