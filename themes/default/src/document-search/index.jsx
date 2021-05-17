@@ -84,7 +84,7 @@ class DocumentSearch extends React.Component {
 
   handleResultClick = (groupId, locator) => {
     const { view } = this.props;
-    window.location.href = `${view}#/${locator}`;
+    window.location.href = `${view}/${locator}`;
     this.setState({
       showResults: false,
     });

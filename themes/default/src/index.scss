@@ -46,6 +46,7 @@ body {
 .next-shell-light .next-shell-header {
   position: fixed;
   color: #fff;
+  height: 80px;
   border-bottom: 1px solid #E6E7EB;
   -webkit-box-shadow: none;
   padding-left: 40px;
@@ -59,7 +60,7 @@ body {
   margin: 0;
  }
 .next-shell-light .next-shell-main {
-  margin-top: $shell-light-header-height;
+  margin-top: 80px;
   background: #fff;
 }
 .next-shell-light .next-shell-aside .next-shell-localnavigation {
@@ -70,7 +71,8 @@ body {
   box-shadow: none;
 }
 
-.next-shell-light .next-shell-main .next-shell-content {
+.next-search-simple .next-input, .next-search-simple .next-search-left {
+  border-radius: 500px;
 }
 
 .next-nav.next-normal .next-menu-sub-menu .next-menu-item {
@@ -209,14 +211,6 @@ body {
 
 .wiki a {
   text-decoration: none;
-}
-
-.wiki a:hover {
-  color: #3e71f7;
-}
-
-.wiki a:active {
-  color: #3e71f7;
 }
 
 .wiki img {

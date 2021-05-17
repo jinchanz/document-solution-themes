@@ -58,10 +58,10 @@
     }
   ],
   "userInfo": {
-    "id": 231502,
+    "id": 123,
     "type": "User",
     "space_id": 0,
-    "account_id": 103108,
+    "account_id": 123,
     "login": "mark.ck",
     "name": "程科(金禅)",
     "avatar_url": "https://cdn.nlark.com/yuque/0/2019/png/231502/1575430020486-avatar/64bbc238-6ee3-4ae8-aae5-81fad0f4b3f0.png",
@@ -72,7 +72,7 @@
     "public": 1,
     "description": {
       "github": "https://github.com/mark-ck",
-      "beian": "粤ICP备 16116485 号"
+      "beian": "粤ICP备 xxx 号"
     },
     "created_at": "2018-12-25T09:49:25.000Z",
     "updated_at": "2020-05-16T20:03:17.000Z",
@@ -88,8 +88,8 @@
   "noHeader": false,
   "showSearch": true,
   "showEditor": false,
-  "view": "/",
-  "token": "0yoqsVw5YuB4pSDvALMNBBVqIP5ZbxicYgdvYCYx",
+  "view": "",
+  "token": "<your yuque token>",
   "darkMode": false,
   "logo": "https://i.ablula.tech/ablula.png"
 }
