@@ -111,14 +111,20 @@ class DocumentView extends Component {
     setTimeout(() => {
       if (!doc) return;
       if (!toc.doc || (toc.locator !== doc.locator)) this.content = document.getElementById(`document-content-${doc.locator}`);
-      if (this.content && (!toc || (toc.locator !== doc.locator))) this.setState({
-        toc: {
-          doc: <div style={{ position: 'fixed', top: 100, right: 50 }}>
-            <Anchor style={{ width: 180 }} noHash content={() => this.content} />
-          </div>,
-          locator: doc.locator,
-        },
-      });
+      if (this.content && (!toc || (toc.locator !== doc.locator))) {
+        this.setState({
+          toc: {
+            doc: <div style={{ position: 'fixed', top: 100, right: 50 }}>
+              <Anchor style={{ width: 180 }} content={() => this.content} />
+            </div>,
+            locator: doc.locator,
+          },
+        });
+        const { hash } = location;
+        if (hash) {
+          location.href = hash;
+        }
+      }
     });
 
     return (

@@ -3,7 +3,7 @@ import { join } from 'path';
 import PropTypes from 'prop-types';
 import { keyBy, groupBy } from 'lodash';
 import { Nav, Message, Shell, Box } from '@alifd/next';
-import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
 import DocumentSearch from './document-search/index';
 import DocShowNew from './document-view/index';
@@ -25,14 +25,15 @@ class Container extends React.Component {
   constructor(props, context) {
     super(props, context);
     const { data } = this.props;
-    const { directories } = data;
+    const { directories, view } = data;
     const locator = props.match.params.name || (directories && directories[0] && directories[0].locator);
     if (!locator) {
-      location.hash = `#/${directories[0].locator}`;
+      location.href = `${view}/${directories[0].locator}`;
       return;
     }
     this.documents = keyBy(directories, dir => dir.locator);
     this.state = {
+      view,
       locator,
       directories,
       loadingDirectories: false,
@@ -90,13 +91,13 @@ class Container extends React.Component {
   }
 
   renderCategory(name, documents = []) {
-
+    const { view } = this.state;
     if (!documents || !documents.length) {
       return;
     }
     if (documents.length === 1) {
       return <Item key={documents[0].locator}>
-        <Link to={`/${documents[0].locator}`}>{documents[0].name}</Link>
+        <Link to={`${view}/${documents[0].locator}`}>{documents[0].name}</Link>
       </Item>;
     }
 
@@ -104,7 +105,7 @@ class Container extends React.Component {
       <SubNav label={name} key={name}>
         {documents.map(doc => (
           <Item key={doc.locator}>
-            <Link to={`/${doc.locator}`}>{doc.name}</Link>
+            <Link to={`${view}/${doc.locator}`}>{doc.name}</Link>
           </Item>
         ))}
       </SubNav>
@@ -203,11 +204,11 @@ const App = (data) => {
   return (
     <Router>
       <div>
-        <Route exact path="/" render={(props) =>
+        <Route exact path={realData.view} render={(props) =>
           <Container {...props} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode} />}>
-          { directories && directories.length ? <Redirect from="/" to={`${directories[0].locator}`}/> : null}
+          { directories && directories.length ? <Redirect from={realData.view} to={`${realData.view}/${directories[0].locator}`}/> : null}
         </Route>
-        <Route exact path="/:name" render={(props) =>
+        <Route exact path={`${realData.view}/:name`} render={(props) =>
           <Container {...props} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode} />}/>
       </div>
     </Router>
