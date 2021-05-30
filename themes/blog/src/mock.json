@@ -82,14 +82,14 @@
   "namespace": "mark.ck/igyg77",
   "baseUrl": "https://www.yuque.com/api/v2",
   "search": "/documents/search",
-  "title": "Ablula 的博客",
+  "title": "金禅的博客",
   "prefix": "/documents",
   "onlyDoc": false,
   "noHeader": false,
-  "showSearch": true,
+  "showSearch": false,
   "showEditor": false,
   "view": "",
   "token": "<your yuque token>",
   "darkMode": false,
-  "logo": "https://i.ablula.tech/ablula.png"
+  "logo": "https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*OwZWQ68zSTMAAAAAAAAAAABkARQnAQ"
 }

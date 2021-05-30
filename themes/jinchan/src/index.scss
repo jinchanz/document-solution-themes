@@ -32,40 +32,15 @@ body {
   font-family: Roboto,"PingFang SC","Helvetica Neue",Arial,Helvetica,sans-serif;
 }
 
+.layout {
+  padding: 10px;
+}
+
 @media (min-width: 500px) {
   header {
     max-width: 42rem;
     margin: auto;
     padding: 10px 0;
-    
-    .title {
-      font-weight: bolder;
-      font-size: 20px;
-    }
-
-    .next-nav.next-hoz .next-menu-item-inner {
-      font-size: medium;
-    }
-
-    .next-nav.next-line.next-hoz {
-      border-top-color: transparent;
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-bottom-color: transparent;
-    }
-
-    .next-nav.next-line .next-nav-item.next-menu-item.next-selected {
-      transition: background-color 150ms ease-in 0s;
-      font-weight: bold;
-      color: var(--link-color);
-      text-decoration: none;
-    }
-
-    .next-nav.next-line .next-nav-item.next-menu-item:hover {
-      background-color: transparent;
-      color: var(--link-color);
-      font-weight: bold;
-    }
   }
 
   .content {
@@ -80,13 +55,58 @@ body {
     bottom: 0;
     width: 42rem;
     color: gray;
-
+  
     a {
       color: gray;
       text-decoration: none;
     }
   }
+}
 
+.title {
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.next-nav.next-hoz .next-menu-item-inner {
+  font-size: medium;
+}
+
+.next-nav.next-line.next-hoz {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.next-nav.next-line .next-nav-item.next-menu-item.next-selected {
+  transition: background-color 150ms ease-in 0s;
+  font-weight: bold;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.next-nav.next-line .next-nav-item.next-menu-item:hover {
+  background-color: transparent;
+  color: var(--link-color);
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+
+  .footer {
+    flex-flow: column nowrap;
+    padding: 10px 0px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: gray;
+  
+    a {
+      color: gray;
+      text-decoration: none;
+    }
+  }
 }
 .next-shell-light .next-shell-header {
   position: fixed;

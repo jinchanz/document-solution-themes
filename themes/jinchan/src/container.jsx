@@ -39,7 +39,7 @@ class Container extends React.Component {
     const { view, searchAPI, title, logo, onlyDoc, noHeader, userInfo } = data;
 
     return (
-      <main>
+      <main className="layout">
         <header>
           <Box  direction="row" justify="space-between" align="center">
             <a className="title" style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}>{title}</a>

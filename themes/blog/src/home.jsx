@@ -196,7 +196,7 @@ const App = (data) => {
   console.log('location: ', href);
   console.log('selectedKey: ', selectedKey);
   const prefix = realData.view.slice(-1) === '/' ? realData.view : (realData.view + '/');
-console.log('realData.view: ', realData.view);
+  console.log('realData.view: ', realData.view);
   return (
     <BrowserRouter>
       <Layout prefix={'/blog/'} defaultSelectedKeys={selectedKey} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode}>
