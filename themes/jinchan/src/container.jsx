@@ -39,28 +39,31 @@ class Container extends React.Component {
     const { view, searchAPI, title, logo, onlyDoc, noHeader, userInfo } = data;
 
     return (
-      <main className="layout">
-        <header>
-          <Box  direction="row" justify="space-between" align="center">
-            <a className="title" style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}>{title}</a>
-            <Nav
-              direction="hoz"
-              hozAlign="right"
-              type="line"
-              activeDirection={null}              
-              selectedKeys={this.props.defaultSelectedKeys}
-              triggerType="hover"
-            >
-              <Item key="home"><a id="homepage" href={path('/')}>首页</a></Item>
-              <Item key="blog"><a href={path('/blog')}>博客</a></Item>
-              <Item key="me"><a href={path('/me')}>关于</a></Item>
-            </Nav>
-          </Box>
-        </header>
-        <main className="content">
-          { this.props.children }
+      <>
+        <main className="layout">
+          <header>
+            <Box  direction="row" justify="space-between" align="center">
+              <a className="title" style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}>{title}</a>
+              <Nav
+                direction="hoz"
+                hozAlign="right"
+                type="line"
+                activeDirection={null}              
+                selectedKeys={this.props.defaultSelectedKeys}
+                triggerType="hover"
+              >
+                <Item key="home"><a id="homepage" href={path('/')}>首页</a></Item>
+                <Item key="blog"><a href={path('/blog')}>博客</a></Item>
+                <Item key="me"><a href={path('/me')}>关于</a></Item>
+              </Nav>
+            </Box>
+          </header>
+          <main className="content">
+            { this.props.children }
+          </main>
+        </main>
           {
-            userInfo && userInfo.description && userInfo.description.beian && !this.props.defaultSelectedKeys.includes('blog')
+            userInfo && userInfo.description && userInfo.description.beian && this.props.defaultSelectedKeys.includes('home')
             && <Box className="footer">
               <Divider/>
               <Box direction={'row'} justify={'center'}>
@@ -68,8 +71,7 @@ class Container extends React.Component {
               </Box>
             </Box>
           }
-        </main>
-      </main>
+        </>
       // <Shell style={{ marginTop: noHeader || onlyDoc ? -60 : 0, height: noHeader || onlyDoc ? 'calc(100vh + 60px)' : '100vh' }}>
       //   <Shell.Navigation
       //     direction="hoz"

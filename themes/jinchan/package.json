@@ -1,6 +1,6 @@
 {
   "name": "@ablula/blog-jinchan",
-  "version": "0.0.2",
+  "version": "0.0.4-beta.0",
   "description": "blog theme for ablula document",
   "files": [
     "src/",

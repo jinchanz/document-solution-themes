@@ -119,7 +119,7 @@ class DocumentView extends Component {
     //     }
     //   });
     // });
-
+    console.log('in document view: ', doc);
     return (
       <main className="article">
         {loadingDocument || !doc ? (

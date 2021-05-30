@@ -8,25 +8,52 @@ body {
     list-style: none;
     padding-left: 0;
   
-    li {
-      padding: 10px 15px;
-      margin: 0;
-  
-      span {
-        display: inline-block;
-        width: 160px;
-        padding-right: 10px;
-        text-align: right;
-        font-size: inherit;
-        color: rgb(91, 91, 91);
-      }
-  
-      a.jsx-2008102337 {
+    @media (min-width: 500px) {
+      li {
         padding: 10px 15px;
-        transition: background-color 150ms ease-in 0s;
-        font-weight: bold;
-        color: var(--link-color);
-        text-decoration: none;
+        margin: 0;
+  
+        span {
+          display: inline-block;
+          width: 160px;
+          padding-right: 10px;
+          text-align: right;
+          font-size: inherit;
+          color: rgb(91, 91, 91);
+        }
+    
+        a {
+          padding: 10px 15px;
+          transition: background-color 150ms ease-in 0s;
+          font-weight: bold;
+          color: var(--link-color);
+          text-decoration: none;
+        }
+      }
+    }
+
+    @media (max-width: 600px) {
+      li {
+        padding: 10px 0;
+        display: flex;
+        margin: 0;
+        flex-direction: column;
+        align-items: self-end;
+        span {
+          display: inline-block;
+          padding-right: 10px;
+          text-align: right;
+          font-size: inherit;
+          color: rgb(91, 91, 91);
+        }
+    
+        a {
+          padding: 10px 0;
+          transition: background-color 150ms ease-in 0s;
+          font-weight: bold;
+          color: var(--link-color);
+          text-decoration: none;
+        }
       }
   
     }

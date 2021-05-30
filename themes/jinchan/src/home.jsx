@@ -29,15 +29,17 @@ class Container extends React.Component {
     super(props, context);
     const { data, prefix } = this.props;
     const { directories } = data;
-    const locator = props.match.params.name || (directories && directories[0] && directories[0].locator);
+    const _directories = directories.filter(document => document.locator !== 'me');
+    console.log('_directories in cons: ', _directories);
+    const locator = props.match.params.name || (_directories && _directories[0] && _directories[0].locator);
     if (!locator) {
-      location.href = `${prefix}${directories[0].locator}`;
+      location.href = `${prefix}${_directories[0].locator}`;
       return;
     }
-    this.documents = keyBy(directories, dir => dir.locator);
+    this.documents = keyBy(_directories, dir => dir.locator);
     this.state = {
       locator,
-      directories,
+      directories: _directories,
       loadingDirectories: false,
       errorDirectories: false,
     };
@@ -74,6 +76,7 @@ class Container extends React.Component {
 
   componentDidMount() {
     const { locator, directories } = this.state;
+    console.log('_directories in didmount: ', directories);
     if (!locator && directories && directories.length) {
       this.setState({
         locator: directories[0].locator,
@@ -158,7 +161,7 @@ class Container extends React.Component {
 
 const App = (data) => {
   const realData = data && data.data;
-  const directories = realData && realData.directories || [];
+  const directories = realData && realData.directories.filter(document => document.locator !== 'me') || [];
   const showSearch = realData.showSearch && realData.searchAPI;
   let lazyLoad = realData.lazyLoad;
   if (!lazyLoad && directories.length > 20) {
@@ -178,18 +181,18 @@ const App = (data) => {
   console.log('realData.view: ', realData.view);
   return (
     <BrowserRouter>
-      <Layout prefix={'/blog/'} defaultSelectedKeys={selectedKey} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode}>
+      <Layout prefix={'/blog/'} defaultSelectedKeys={selectedKey} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!data.data.darkMode}>
         <Switch>
           <Route exact path="/" render={(props =>
-            <Posts {...props} posts={realData.documents} />
+            <Posts {...props} posts={realData.documents.filter(item => item.slug !== 'me')} />
           )}/>
           <Route path="/me" render={(props =>
               <Me {...props} data={realData} />
           )}/>
           <Route exact path={`/*/:name`} render={(props) =>
-            <Container {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode} />}/>
+            <Container {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}/>
           <Route path={'/*/'} render={(props) =>
-            <Container {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode} />}>
+            <Container {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}>
             { directories && directories.length ? <Redirect to={`${'/blog/'}${directories[0].locator}`}/> : null}
           </Route>
         </Switch>
