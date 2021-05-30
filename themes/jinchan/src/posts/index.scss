@@ -1,0 +1,34 @@
+body {
+  font-family: -apple-system,BlinkMacSystemFont,sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.home {
+  ul {
+    list-style: none;
+    padding-left: 0;
+  
+    li {
+      padding: 10px 15px;
+      margin: 0;
+  
+      span {
+        display: inline-block;
+        width: 160px;
+        padding-right: 10px;
+        text-align: right;
+        font-size: inherit;
+        color: rgb(91, 91, 91);
+      }
+  
+      a.jsx-2008102337 {
+        padding: 10px 15px;
+        transition: background-color 150ms ease-in 0s;
+        font-weight: bold;
+        color: var(--link-color);
+        text-decoration: none;
+      }
+  
+    }
+  }
+}
