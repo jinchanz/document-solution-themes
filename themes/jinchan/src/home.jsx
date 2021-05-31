@@ -184,7 +184,7 @@ const App = (data) => {
       <Layout prefix={'/blog/'} defaultSelectedKeys={selectedKey} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!data.data.darkMode}>
         <Switch>
           <Route exact path="/" render={(props =>
-            <Posts {...props} posts={realData.documents.filter(item => item.slug !== 'me')} />
+            <Posts {...props} posts={realData && realData.documents && realData.documents.filter(item => item.slug !== 'me') || []} />
           )}/>
           <Route path="/me" render={(props =>
               <Me {...props} data={realData} />

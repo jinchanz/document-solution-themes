@@ -149,64 +149,64 @@ body {
   color: #595959;
 }
 
-.wiki {
+.article {
   font-size: 14px;
   line-height: 2;
   color: #314659;
   margin: 0 auto;
-  padding: 40px;
+  padding: 20px 0;
 }
 
-.wiki h1 {
+.article h1 {
   font-size: 28px;
-  margin: 28px auto 20px;
+  margin: 28px auto 10px;
 }
 
-.wiki h2 {
+.article h2 {
   font-size: 24px;
-  margin: 24px auto 16px;
+  margin: 24px auto 8px;
 }
 
-.wiki h3 {
+.article h3 {
   font-size: 20px;
-  margin: 20px auto 12px;
+  margin: 20px auto 6px;
 }
 
-.wiki h4 {
+.article h4 {
   font-size: 16px;
-  margin: 16px auto 8px;
+  margin: 16px auto 4px;
 }
 
-.wiki h1,
-.wiki h2,
-.wiki h3,
-.wiki h4 {
-  font-weight: normal;
+.article h1,
+.article h2,
+.article h3,
+.article h4 {
+  font-weight: normal !important;
   line-height: 1;
   color: #0d1a26;
 }
 
-.wiki h1:first-child,
-.wiki h2:first-child,
-.wiki h3:first-child,
-.wiki h4:first-child {
+.article h1:first-child,
+.article h2:first-child,
+.article h3:first-child,
+.article h4:first-child {
   margin-top: 0;
 }
 
-.wiki p {
+.article p {
   font-size: 14px;
   margin: 14px 0;
 }
 
-.wiki strong {
+.article strong {
   font-weight: bold;
 }
 
-.wiki em {
+.article em {
   font-style: normal;
 }
 
-.wiki code {
+.article code {
   padding: 2px 4px;
   font-size: 90%;
   color: #c7254e;
@@ -214,7 +214,7 @@ body {
   border-radius: 2px;
 }
 
-.wiki pre {
+.article pre {
   background: #f2f4f5;
   color: #314659;
   font-size: 12px;
@@ -236,7 +236,7 @@ body {
   hyphens: none;
 }
 
-.wiki pre code {
+.article pre code {
   display: inline;
   max-width: initial;
   padding: 0;
@@ -249,19 +249,19 @@ body {
   color: #93a1a1;
 }
 
-.wiki .code.solarized-dark {
+.article .code.solarized-dark {
   background-color: #002b36;
   color: #93a1a1;
 }
 
-.wiki blockquote {
+.article blockquote {
   border-left: #ddd solid 3px;
   margin-left: 0;
   padding: 5px 10px;
   color: #999;
 }
 
-.wiki ul {
+.article ul {
   list-style-type: circle;
 
   li {
@@ -270,7 +270,7 @@ body {
   }
 }
 
-.wiki ol {
+.article ol {
   list-style-type: decimal;
 
   li {
@@ -279,19 +279,19 @@ body {
   }
 }
 
-.wiki a {
+.article a {
   text-decoration: none;
 }
 
-.wiki a:hover {
+.article a:hover {
   color: #3e71f7;
 }
 
-.wiki a:active {
+.article a:active {
   color: #3e71f7;
 }
 
-.wiki img {
+.article img {
   max-width: 100%;
   padding: 5px;
 }
@@ -303,7 +303,7 @@ body {
   justify-content: center;
 }
 
-.wiki .document__toc {
+.article .document__toc {
   @media screen and (min-width: 1400px) {
     position: fixed;
     right: 20px;
