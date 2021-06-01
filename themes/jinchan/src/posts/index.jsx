@@ -12,7 +12,7 @@ class DocumentView extends Component {
           { posts.map(item =>
               <li key={item.title}>
                 <span>
-                  {new Date(item.content_updated_at).toDateString()}
+                  {new Date(item.updated_at).toDateString()}
                 </span>
                 <a href={`/blog/${item.slug}`}>
                   {item.title}

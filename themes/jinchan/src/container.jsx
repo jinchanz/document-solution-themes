@@ -52,8 +52,8 @@ class Container extends React.Component {
                 selectedKeys={this.props.defaultSelectedKeys}
                 triggerType="hover"
               >
-                <Item key="home"><a id="homepage" href={path('/')}>首页</a></Item>
-                <Item key="blog"><a href={path('/blog')}>博客</a></Item>
+                <Item key="home"><a id="homepage" href={path('/')}>博客</a></Item>
+                {/* <Item key="blog"><a href={path('/blog')}>博客</a></Item> */}
                 <Item key="me"><a href={path('/me')}>关于</a></Item>
               </Nav>
             </Box>
