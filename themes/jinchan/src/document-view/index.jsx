@@ -1,11 +1,9 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Loading, Message, Icon, Balloon, Box } from '@alifd/next';
+import { Loading, Message, Icon, Balloon, Box, Avatar, Divider } from '@alifd/next';
 
 import './index.scss';
-import Anchor from '@alifd/biz-anchor';
-
 class DocumentView extends Component {
   static propTypes = {
     locator: PropTypes.string,
@@ -128,25 +126,36 @@ class DocumentView extends Component {
           </div>
         ) : (
           <div>
-            <h1 id="document-title" className="document__title">
-              {doc.title}
-              {showEditor && <Balloon trigger={<a target="_blank" href={`https:www.yuque.com/${namespace}/${doc.locator}`} style={{ marginLeft: 20, color: '#666666' }}><Icon size={'small'} type='edit'/></a>} closable={false}>
-                  在语雀中编辑
-              </Balloon>}
-            </h1>
-            <Box direction="row" spacing={10} style={{ margin: '10px 0', color: 'gray', userSelect: 'none' }}>
-              <Box spacing={5} direction="row" justify="center" align="center">
-                <Icon type="account" size="xs"></Icon>
-                <span>{doc.creator}</span>
-              </Box>
-              <Box spacing={5} direction="row" justify="center" align="center">
-                <Icon type="clock" size="xs"></Icon>
-                <span>{new Date(doc.updated_at).toLocaleDateString()}</span>
-              </Box>
-              <Box spacing={5} direction="row" justify="center" align="center">
-                <span>共 {doc.word_count} 字</span>
-              </Box>
-            </Box>
+            { doc.locator !== 'me' ? <>
+              <h1 id="document-title" className="document__title">
+                {doc.title}
+                {showEditor && <Balloon trigger={<a target="_blank" href={`https:www.yuque.com/${namespace}/${doc.locator}`} style={{ marginLeft: 20, color: '#666666' }}><Icon size={'small'} type='edit'/></a>} closable={false}>
+                    在语雀中编辑
+                </Balloon>}
+              </h1>
+              <Box className="meta" direction="row" spacing={10}>
+                <Box spacing={5} direction="row" justify="center" align="center">
+                  <Icon type="account" size="xs"></Icon>
+                  <span>{doc.creator}</span>
+                </Box>
+                <Box spacing={5} direction="row" justify="center" align="center">
+                  <Icon type="clock" size="xs"></Icon>
+                  <span>{new Date(doc.updated_at).toLocaleDateString()}</span>
+                </Box>
+                <Box spacing={5} direction="row" justify="center" align="center">
+                  <Icon type="eye" size="xs"></Icon>
+                  <span>{doc.hits || 0}</span>
+                </Box>
+                <Box spacing={5} direction="row" justify="center" align="center">
+                  <span>共 {doc.word_count} 字</span>
+                </Box>
+              </Box></> : <><Box className="me-meta" direction="row" align="center" justify="space-between">
+                <h1 style={{ margin: 0 }}>
+                {doc.title}
+                </h1>
+                <Avatar shape="square" src="https://i.ablula.tech/avatar.png" />
+              </Box></>
+            }
             <div className="document__main">
               <div
                 id={`document-content-${doc.locator}`}

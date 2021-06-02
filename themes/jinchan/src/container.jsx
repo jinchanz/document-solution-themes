@@ -61,16 +61,17 @@ class Container extends React.Component {
           <main className="content">
             { this.props.children }
           </main>
-        </main>
           {
-            userInfo && userInfo.description && userInfo.description.beian && this.props.defaultSelectedKeys.includes('home')
-            && <Box className="footer">
-              <Divider/>
-              <Box direction={'row'} justify={'center'}>
-              Ablula &copy;{new Date().getFullYear()} 版权所有 |&nbsp;<a target="_blank" href="http: beian.miit.gov.cn/" >{userInfo.description.beian}</a>
+            userInfo && userInfo.description && userInfo.description.beian && !this.props.defaultSelectedKeys.includes('blog')
+            && <main className="footer"><Box>
+                <Divider/>
+                <Box direction={'row'} justify={'center'}>
+                Ablula &copy;{new Date().getFullYear()} 版权所有 |&nbsp;<a target="_blank" href="http: beian.miit.gov.cn/" >{userInfo.description.beian}</a>
+                </Box>
               </Box>
-            </Box>
+            </main>
           }
+        </main>
         </>
       // <Shell style={{ marginTop: noHeader || onlyDoc ? -60 : 0, height: noHeader || onlyDoc ? 'calc(100vh + 60px)' : '100vh' }}>
       //   <Shell.Navigation

@@ -36,20 +36,28 @@ body {
   header {
     max-width: 42rem;
     margin: auto;
-    padding: 10px 0;
+    padding: 10px 0 5px 0;
+    border-bottom-style: solid;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-width: 1px;
+    border-color: #DCDEE3;
   }
 
   .content {
+    min-height: calc(100vh - 160px);
     max-width: 42rem;
     margin: auto;
   }
 
   .footer {
+    font-size: 12px;
     flex-flow: column nowrap;
-    padding: 10px 0px;
-    position: absolute;
+    padding: 16px 0px;
     bottom: 0;
-    width: 100%;
+    max-width: 42rem;
+    margin: auto;
     color: gray;
   
     a {
@@ -90,14 +98,25 @@ body {
 
 @media (max-width: 600px) {
 
-  .layout {
-    padding: 20px;
+  header {
+    padding: 10px 20px 5px 20px;
+    border-bottom-style: solid;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-width: 1px;
+    border-color: #DCDEE3;
+  }
+
+  .content {
+    min-height: calc(100vh - 160px);
+    padding: 0 20px;
   }
 
   .footer {
+    font-size: 12px;
     flex-flow: column nowrap;
-    padding: 10px 0px;
-    position: absolute;
+    padding: 16px 0px;
     bottom: 0;
     width: 100%;
     color: gray;
@@ -257,26 +276,31 @@ body {
 .article blockquote {
   border-left: #ddd solid 3px;
   margin-left: 0;
-  padding: 5px 10px;
+  padding: 0 10px;
   color: #999;
+}
+
+.article .ne-quote {
+  border-left: #ddd solid 3px;
+  margin-left: 0;
+  padding: 0 10px;
+  color: #999;
+}
+
+.article .ne-p {
+  margin: 0;
 }
 
 .article ul {
   list-style-type: circle;
-
-  li {
-    margin-left: 20px;
-    padding-left: 4px;
-  }
+  margin-block-end: 0;
+  margin-block-start: 0;
 }
 
 .article ol {
   list-style-type: decimal;
-
-  li {
-    margin-left: 20px;
-    padding-left: 4px;
-  }
+  margin-block-end: 0;
+  margin-block-start: 0;
 }
 
 .article a {

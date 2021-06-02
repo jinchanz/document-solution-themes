@@ -4,4 +4,29 @@
     max-width: 100%;
   }
 
+  .document__title {
+    text-align: center;
+  }
+
+}
+
+.meta {
+  margin: 15px 0 30px 0;
+  color: gray;
+  user-select: none;
+  border-bottom-style: solid;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-color: #DCDEE3;
+  justify-content: center;
+}
+
+.me-meta {
+  border-width: 1px;
+  border-bottom-style: solid;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-color: #DCDEE3; 
 }

@@ -10,7 +10,6 @@ class Me extends Component {
   render() {
     const { data, showSearch, lazyLoad, darkMode, prefix } = this.props;
     const { directories, api } = data || {};
-    console.log('directories: ', directories);
     const aboutme = (directories || []).filter(document => document.locator === 'me');
     return aboutme && aboutme.length 
       ? <DocumentView lazyLoad={lazyLoad} api={api} locator={'me'} namespace={data.namespace} doc={aboutme[0].document} showEditor={data.showEditor} /> 
