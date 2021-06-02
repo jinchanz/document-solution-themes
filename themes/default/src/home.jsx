@@ -105,7 +105,11 @@ class Container extends React.Component {
       <SubNav label={name} key={name}>
         {documents.map(doc => (
           <Item key={doc.locator}>
-            <Link to={`${view}/${doc.locator}`}>{doc.name}</Link>
+            {
+              (doc.locator.startsWith('http://') || doc.locator.startsWith('https://')) 
+                ? <a target="_blank" href={doc.locator}>{doc.name}</a>
+                : <Link to={`${view}/${doc.locator}`}>{doc.name}</Link>
+            }
           </Item>
         ))}
       </SubNav>
@@ -138,6 +142,15 @@ class Container extends React.Component {
     const { data, showSearch, lazyLoad, darkMode } = this.props;
     const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage, searchPlaceholder } = data;
     const { params } = this.props.match;
+    if (!this.documents[locator]) {
+      return <main style={{
+        position: 'absolute',
+        left: '45vw',
+        top: '50vh',
+      }}>
+        文档 “{locator}” 不存在，点击<a href={view}>此处</a>返回首页
+      </main>;
+    }
     const currentDocument = this.documents[locator].document;
     const selectedKeys = params && params.name ? [params.name] : [];
     if (onlyDoc) {
