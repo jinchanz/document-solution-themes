@@ -22,7 +22,7 @@
   "dependencies": {
     "@alifd/biz-anchor": "^1.1.7",
     "@alifd/next": "^1.19.23",
-    "axios": "^0.19.2",
+    "axios": ">=0.21.1",
     "highlight-words-core": "^1.2.2",
     "moment": "^2.24.0",
     "prop-types": "^15.5.8",
