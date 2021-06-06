@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Box, Button, Divider } from '@alifd/next';
+import { Link } from 'react-router-dom';
 
 import './index.scss';
 class DocumentView extends Component {
@@ -14,9 +14,9 @@ class DocumentView extends Component {
                 <span>
                   {new Date(item.updated_at).toDateString()}
                 </span>
-                <a href={`/blog/${item.slug}`}>
+                <Link to={`/blog/${item.slug}`}>
                   {item.title}
-                </a>
+                </Link>
               </li>
             ) 
           }

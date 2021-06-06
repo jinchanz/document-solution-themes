@@ -3,7 +3,7 @@ import { join } from 'path';
 import PropTypes from 'prop-types';
 import { keyBy, groupBy } from 'lodash';
 import { Nav, Divider, Shell, Box } from '@alifd/next';
-import DocumentSearch from './document-search/index';
+import { Link } from 'react-router-dom';
 
 const path = p => join('', p);
 const { Item } = Nav;
@@ -48,13 +48,13 @@ class Container extends React.Component {
                 direction="hoz"
                 hozAlign="right"
                 type="line"
-                activeDirection={null}              
-                selectedKeys={this.props.defaultSelectedKeys}
+                activeDirection={null}          
+                defaultSelectedKeys={this.props.defaultSelectedKeys}
                 triggerType="hover"
               >
-                <Item key="home"><a id="homepage" href={path('/')}>博客</a></Item>
+                <Item key="home"><Link id="homepage" to={path('/')}>博客</Link></Item>
                 {/* <Item key="blog"><a href={path('/blog')}>博客</a></Item> */}
-                <Item key="me"><a href={path('/me')}>关于</a></Item>
+                <Item key="me"><Link id="me" to={path('/me')}>关于</Link></Item>
               </Nav>
             </Box>
           </header>

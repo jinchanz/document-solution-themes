@@ -30,7 +30,6 @@ class Container extends React.Component {
     const { data, prefix } = this.props;
     const { directories } = data;
     const _directories = directories.filter(document => document.locator !== 'me');
-    console.log('_directories in cons: ', _directories);
     const locator = props.match.params.name || (_directories && _directories[0] && _directories[0].locator);
     if (!locator) {
       location.href = `${prefix}${_directories[0].locator}`;
@@ -76,7 +75,6 @@ class Container extends React.Component {
 
   componentDidMount() {
     const { locator, directories } = this.state;
-    console.log('_directories in didmount: ', directories);
     if (!locator && directories && directories.length) {
       this.setState({
         locator: directories[0].locator,
@@ -175,13 +173,12 @@ const App = (data) => {
   } else if (href.includes('/me')) {
     selectedKey = 'me';
   }
-  console.log('location: ', href);
-  console.log('selectedKey: ', selectedKey);
+
   const prefix = realData.view.slice(-1) === '/' ? realData.view : (realData.view + '/');
-  console.log('realData.view: ', realData.view);
+
   return (
     <BrowserRouter>
-      <Layout prefix={'/blog/'} defaultSelectedKeys={selectedKey} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!data.data.darkMode}>
+      <Layout prefix={'/blog/'} defaultSelectedKeys={[selectedKey]} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!data.data.darkMode}>
         <Switch>
           <Route exact path="/" render={(props =>
             <Posts {...props} posts={realData && realData.documents && realData.documents.filter(item => item.slug !== 'me') || []} />
