@@ -4,7 +4,7 @@
     [
       "build-plugin-fusion",
       {
-        "themePackage": "@alife/theme-fusion-site-2-0"
+        "themePackage": "@alifd/theme-2"
       }
     ],
     ["build-plugin-moment-locales", {

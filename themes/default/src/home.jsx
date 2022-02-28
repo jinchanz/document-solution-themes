@@ -3,7 +3,7 @@ import { join } from 'path';
 import PropTypes from 'prop-types';
 import { keyBy, groupBy } from 'lodash';
 import { Nav, Message, Shell, Box } from '@alifd/next';
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
 import DocumentSearch from './document-search/index';
 import DocShowNew from './document-view/index';
@@ -79,51 +79,6 @@ class Container extends React.Component {
     }
   }
 
-  insertDividers(directoryElements) {
-    return directoryElements.reduce((memo, next, index, src) => {
-      memo.push(next);
-      if (index !== src.length - 1) {
-        // eslint-disable-next-line react/no-array-index-key
-        // memo.push(<Divider key={`divider ${index}`} />);
-      }
-      return memo;
-    }, []);
-  }
-
-  renderCategory(name, documents = []) {
-    const { view } = this.state;
-    if (!documents || !documents.length) {
-      return;
-    }
-    if (documents.length === 1) {
-      return <Item key={documents[0].locator}>
-        <Link to={`${view}/${documents[0].locator}`}>{documents[0].name}</Link>
-      </Item>;
-    }
-
-    return (
-      <SubNav label={name} key={name}>
-        {documents.map(doc => (
-          <Item key={doc.locator}>
-            {
-              (doc.locator.startsWith('http://') || doc.locator.startsWith('https://')) 
-                ? <a target="_blank" href={doc.locator}>{doc.name}</a>
-                : <Link to={`${view}/${doc.locator}`}>{doc.name}</Link>
-            }
-          </Item>
-        ))}
-      </SubNav>
-    );
-  }
-
-  renderDirectories(directories = []) {
-    const { categoryMap, categoryOrder } = this.processDirectories(directories);
-    const directoryElements = categoryOrder.map(cat =>
-      this.renderCategory(cat, categoryMap[cat]),
-    );
-    return this.insertDividers(directoryElements);
-  }
-
   header(logo, view) {
 
     return (<Box justify="center" className="header-logo">
@@ -184,9 +139,7 @@ class Container extends React.Component {
             </Box>
         </Shell.Navigation>
         <Shell.LocalNavigation>
-          <Nav embeddable className="help-nav" selectedKeys={selectedKeys} aria-label="子菜单">
-            {this.renderDirectories(directories)}
-          </Nav>
+          <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} />
         </Shell.LocalNavigation>
 
         <Shell.Content>
@@ -204,6 +157,91 @@ class Container extends React.Component {
     );
   }
 }
+
+const CustomNav = withRouter((props) => {
+  const { selectedKeys, directories, history, view } = props;
+
+
+  const onSelect = ([key]) => {
+    if (key.match(/^http/)) {
+      window.open(key);
+    } else {
+      history.push(key);
+    }
+  }
+
+  const renderCategory = ({ name, locator, documents = [] }) => {
+    if (!documents || !documents.length) {
+      if (!locator) {
+        return;
+      }
+      return <Item key={locator}>
+        <Link to={`${view}/${locator}`}>{name}</Link>
+      </Item>;
+    }
+
+    return (
+      <SubNav label={name} key={locator || name} selectable={locator}>
+        {documents.map(doc => {
+          if (doc.documents) {
+            return renderCategory(doc);
+          }
+          return <Item key={doc.locator}>
+            {
+              (doc.locator.startsWith('http://') || doc.locator.startsWith('https://')) 
+                ? <a target="_blank" href={doc.locator}>{doc.name}</a>
+                : <Link to={`${view}/${doc.locator}`}>{doc.name}</Link>
+            }
+          </Item>
+        })}
+      </SubNav>
+    );
+  }
+
+  const renderDirectories = (directories = []) => {
+    const depths = _.groupBy(directories, 'depth');
+    const categories = directories.reduce((memo, dir) => {
+      if (!dir.parent_uuid || !memo.find(item => item.uuid === dir.parent_uuid)) {
+        if (dir.depth === 1) {
+          memo.push({...dir});
+        } else {
+          memo.push({
+            name: dir.category,
+            uuid: dir.parent_uuid,
+          });
+        }
+      }
+      return memo;
+    }, []);
+    
+    depths[1] = categories;
+    let formattedDirectories = [];
+    for (let i = Object.keys(depths).length; i > 1; i--) {
+      const currentDepth = depths[i - 1].map(item => {
+        const subDocuments = [];
+        depths[i].forEach(subDocument => {
+          if (subDocument.parent_uuid === item.uuid) {
+            subDocuments.push(subDocument);
+          }
+        });
+        return {
+          ...item,
+          documents: [...subDocuments]
+        };
+      });
+      depths[i - 1] = currentDepth;
+    }
+    formattedDirectories = [ ...depths[1] ];
+
+    const directoryElements = formattedDirectories.map(cat =>
+      renderCategory(cat),
+    );
+    return directoryElements;
+  }
+  return <Nav embeddable className="help-nav" selectedKeys={selectedKeys} onSelect={ onSelect } aria-label="子菜单">
+    {renderDirectories(directories)}
+  </Nav>
+});
 
 const App = (data) => {
   const realData = data && data.data;

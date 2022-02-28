@@ -1,6 +1,6 @@
 {
   "name": "@ablula/document-client",
-  "version": "0.2.2",
+  "version": "0.2.3-beta.0",
   "description": "intro block",
   "files": [
     "src/",
@@ -22,7 +22,7 @@
   "dependencies": {
     "@alifd/biz-anchor": "^1.1.7",
     "@alifd/next": "^1.19.23",
-    "@alife/theme-fusion-site-2-0": "^0.9.2",
+    "@alifd/theme-2": "^0.4.4",
     "axios": ">=0.21.1",
     "highlight-words-core": "^1.2.2",
     "moment": "^2.24.0",
@@ -42,8 +42,5 @@
     "name": "ExampleBlock",
     "title": "demo block",
     "category": "Information"
-  },
-  "buildConfig": {
-    "theme": "@alife/theme-fusion-site-2-0"
   }
 }

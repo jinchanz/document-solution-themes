@@ -78,6 +78,9 @@ body {
 .next-nav.next-normal .next-menu-sub-menu .next-menu-item {
   color: #595959;
 }
+.next-nav.next-ver .next-menu-sub-menu .next-menu-item-inner {
+  font-size: 14px;
+}
 
 .wiki {
   margin: 0 auto;
@@ -85,6 +88,8 @@ body {
   color: #314659;
   font-size: 14px;
   line-height: 2;
+
+
 }
 
 .wiki h1 {
@@ -107,6 +112,16 @@ body {
   font-size: 16px;
 }
 
+.wiki h5 {
+  margin: 16px auto 8px;
+  font-size: 14px;
+}
+
+.wiki h6 {
+  margin: 16px auto 8px;
+  font-size: 14px;
+}
+
 .wiki h1,
 .wiki h2,
 .wiki h3,
@@ -124,8 +139,8 @@ body {
 }
 
 .wiki p {
-  margin: 14px 0;
-  font-size: 14px;
+  margin: 0;
+  line-height: 24px;
 }
 
 .wiki strong {
@@ -231,4 +246,13 @@ body {
     top: 80px;
     right: 20px;
   }
+}
+
+.wiki {
+  .ne-table{
+    border-collapse: collapse;
+  }
+  .ne-table, th, td{
+    border: 1px solid #000;
+  }  
 }
