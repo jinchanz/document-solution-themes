@@ -7,14 +7,12 @@ body {
 /* Header
    ========================================================================== */
 .header {
-  min-width: 1200px;
   color: white;
   font-size: 14px;
   background: transparent;
 
   &-limit {
     position: relative;
-    width: 1200px;
     margin: 0 auto;
   }
 
@@ -52,6 +50,10 @@ body {
   padding: 0 16px
 }
 
+.mobile-nav-item {
+  font-size: 22px;
+}
+
 .dark-nav-item {
   color: rgba(255,255,255,0.60) !important;
 }
@@ -86,7 +88,20 @@ body {
 .next-shell-light .next-shell-main {
   background: #fff;
 }
+
+.document-container {
+  background: '#fff';
+  @media screen and (max-width: 1024px) {
+    padding-right: 0;
+  }
+  padding-right: 230px;
+}
+
 .next-shell-light .next-shell-aside .next-shell-localnavigation {
+  @media screen and (max-width: 600px) {
+    height: 100vh;
+    position: absolute;
+  }
   width: 283px;
   background: #fafafa;
   border-right: 1px solid #E6E7EB;
@@ -106,6 +121,9 @@ body {
 }
 
 .wiki {
+  @media screen and (max-width: 850px) {
+    padding: 0;
+  }
   margin: 0 auto;
   padding: 20px 40px;
   color: #314659;
@@ -258,6 +276,65 @@ body {
   height: 70vh;
   width: 100%;
   justify-content: center;
+}
+
+.header-title,
+.header-search {
+  @media screen and (max-width: 850px) {
+    display: none;
+  }
+}
+
+.desktop-nav {
+  @media screen and (max-width: 850px) {
+    display: none;
+  }
+}
+
+.mobile-nav-close {
+  .next-btn-ghost {
+    border: none;
+  }
+  @media screen and (min-width: 850px) {
+    display: none;
+  }
+}
+
+.mobile-nav-open {
+  @media screen and (min-width: 850px) {
+    display: none;
+  }
+  .next-btn-ghost {
+    border: none;
+  }
+  .next-nav.next-normal {
+    background: transparent;
+    border-color: transparent;
+  }
+  .next-nav.next-normal .next-nav-item.next-menu-item {
+    background: transparent;
+    color: #222222;
+    border-bottom: 1px solid rgba(255,255,255,0.40);
+    border-radius: 0%;
+  }
+  .next-nav.next-normal .next-nav-item.next-menu-item.next-selected {
+    color: #222222;
+    font-weight: bold;
+  }
+  padding: 0 16px;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: #313437c2;
+  z-index: 999;
+}
+
+.mobile-nav-actions {
+  padding: 16px 0;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .wiki .document__toc {

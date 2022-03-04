@@ -2,7 +2,7 @@ import React from 'react';
 import { join } from 'path';
 import PropTypes from 'prop-types';
 import { keyBy, groupBy } from 'lodash';
-import { Nav, Message, Shell, Box } from '@alifd/next';
+import { Nav, Message, Shell, Box, Icon, Button } from '@alifd/next';
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
 import DocumentSearch from './document-search/index';
@@ -13,6 +13,18 @@ import './index.scss';
 const path = p => join('', p);
 const { Item, SubNav } = Nav;
 
+function getLocatorFromMatch(match) {
+  return match && match.params && match.params.name;
+}
+
+function header(logo, view) {
+  return (<Box justify="center" className="header-logo">
+    <a href={path(`/${view}`)}>
+      <img src={logo || '//img.alicdn.com/tfs/TB1pKookmzqK1RjSZFHXXb3CpXa-240-70.png'} alt="logo" />
+    </a>
+  </Box>);
+}
+
 class Container extends React.Component {
   static propTypes = {
     data: PropTypes.object,
@@ -20,6 +32,10 @@ class Container extends React.Component {
 
   static defaultProps = {
     data: {},
+  };
+
+  state = {
+    showMobileNav: false,
   };
 
   constructor(props, context) {
@@ -36,38 +52,8 @@ class Container extends React.Component {
       view,
       locator,
       directories,
-      loadingDirectories: false,
       errorDirectories: false,
     };
-  }
-
-  processDirectories(directories = []) {
-    const categoryOrder = directories.reduce((memo, dir) => {
-      if (!memo.includes(dir.category)) {
-        memo.push(dir.category);
-      }
-      return memo;
-    }, []);
-
-    return {
-      categoryMap: groupBy(directories, dir => dir.category),
-      categoryOrder,
-    };
-  }
-
-  getLocatorFromMatch(match) {
-    return match && match.params && match.params.name;
-  }
-
-  componentWillReceiveProps(nextProps, props) {
-    const locator = this.getLocatorFromMatch(props.match);
-    const newLocator = this.getLocatorFromMatch(nextProps.match);
-
-    if (locator !== newLocator) {
-      this.setState({
-        locator: newLocator,
-      });
-    }
   }
 
   componentDidMount() {
@@ -79,13 +65,22 @@ class Container extends React.Component {
     }
   }
 
-  header(logo, view) {
+  componentWillReceiveProps(nextProps, props) {
+    const locator = getLocatorFromMatch(props.match);
+    const newLocator = getLocatorFromMatch(nextProps.match);
 
-    return (<Box justify="center" className="header-logo">
-      <a href={path(`/${view}`)}>
-        <img src={logo || '//img.alicdn.com/tfs/TB1pKookmzqK1RjSZFHXXb3CpXa-240-70.png'} alt="logo" />
-      </a>
-    </Box>);
+    if (locator !== newLocator) {
+      this.setState({
+        locator: newLocator,
+      });
+    }
+  }
+
+  toggleMobileNav = () => {
+    const { showMobileNav } = this.state;
+    this.setState({
+      showMobileNav: !showMobileNav,
+    });
   }
 
   render() {
@@ -95,6 +90,7 @@ class Container extends React.Component {
       locator,
     } = this.state;
     const { data, showSearch, lazyLoad, darkMode } = this.props;
+    const { showMobileNav } = this.state;
     // FIXME: 兼容
     if (data.lightColor === '#ffffff00') {
       data.lightColor = 'white';
@@ -113,7 +109,7 @@ class Container extends React.Component {
     const currentDocument = this.documents[locator].document;
     const selectedKeys = params && params.name ? [params.name] : [];
     if (onlyDoc) {
-      return <div style={{ background: '#fff', paddingRight: '230px'}}>
+      return <div className='document-container'>
           {errorDirectories && (
               <Message title="Error" type="error">
                   {errorDirectories.message}
@@ -137,30 +133,56 @@ class Container extends React.Component {
             }}>
             <div className='header-container'>
               <Box spacing={40} direction="row" align="center" style={{ height: '100%' }}>
-                  {this.header(logo, homepage)}
+                  {header(logo, homepage)}
                   <Box justify="center" className="title">
                     <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}><span className="header-title">{title}</span></a>
                   </Box>
-                  {showSearch ? <Box justify="center" >
+                  {showSearch ? <Box justify="center" className='header-search' >
                     <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
                   </Box> : null}
               </Box>
               {
                 menuDataSource && menuDataSource.length ?
-                <Nav
-                  className="basic-nav"
-                  mode="popup"
-                  direction="hoz"
-                  type="line"
-                  defaultSelectedKeys={[menuDataSource[0].label]}
-                  triggerType="hover"
-                >
-                  {
-                    menuDataSource.map(item => {
-                      return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}><a href={item.url} target={item.target} >{item.label}</a></Item>;
-                    })
+                <>
+                  <div className="desktop-nav">
+                    <Nav
+                      mode="popup"
+                      direction="hoz"
+                      type="line"
+                      defaultSelectedKeys={[menuDataSource[0].label]}
+                      triggerType="hover"
+                    >
+                      {
+                        menuDataSource.map(item => {
+                          return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}><a href={item.url} target={item.target} >{item.label}</a></Item>;
+                        })
+                      }
+                    </Nav>
+                  </div>
+                  { !showMobileNav ? 
+                    <div className='mobile-nav-close'>
+                      <Button iconSize="large" onClick={this.toggleMobileNav} ghost={ darkMode ? 'dark' : 'light' }><Icon type="list" /> </Button>
+                    </div> :
+                    <div className="mobile-nav-open">
+                      <div className='mobile-nav-actions'>
+                        <Button iconSize="large" onClick={this.toggleMobileNav} ghost={ darkMode ? 'dark' : 'light' }><Icon type="close" /> </Button>
+                      </div>
+                      <Nav
+                        mode="popup"
+                        defaultSelectedKeys={[menuDataSource[0].label]}
+                        triggerType="hover"
+                      >
+                        {
+                          menuDataSource.map(item => {
+                            return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}>
+                              <a className='mobile-nav-item' href={item.url} target={item.target} >{item.label}</a>
+                            </Item>;
+                          })
+                        }
+                      </Nav>
+                    </div>
                   }
-                </Nav> :
+                </> :
                 null
               }
             </div>
@@ -173,7 +195,7 @@ class Container extends React.Component {
         </Shell.LocalNavigation>
 
         <Shell.Content>
-          <div style={{ background: '#fff', paddingRight: '230px', marginTop: noHeader ? 0 : ((headerHeight || 80) - 72)}}>
+          <div className='document-container' style={{marginTop: noHeader ? 0 : ((headerHeight || 80) - 72)}}>
             {errorDirectories && (
               <Message title="Error" type="error">
                 {errorDirectories.message}
@@ -198,7 +220,7 @@ const CustomNav = withRouter((props) => {
     } else {
       history.push(key);
     }
-  }
+  };
 
   const renderCategory = ({ name, locator, documents = [] }) => {
     if (!documents || !documents.length) {
@@ -210,8 +232,13 @@ const CustomNav = withRouter((props) => {
       </Item>;
     }
 
+    let key = locator;
+    if (key === '#') {
+      key = `${key} - ${name} - ${documents.length}`;
+    }
+
     return (
-      <SubNav label={name} key={locator || name} selectable={locator}>
+      <SubNav label={name} key={key} selectable={locator && locator !=='#'}>
         {documents.map(doc => {
           if (doc.documents) {
             return renderCategory(doc);
@@ -226,23 +253,53 @@ const CustomNav = withRouter((props) => {
         })}
       </SubNav>
     );
-  }
+  };
 
   const renderDirectories = (directories = []) => {
-    const depths = _.groupBy(directories, 'depth');
-    const categories = directories.reduce((memo, dir) => {
-      if (!dir.parent_uuid || !memo.find(item => item.uuid === dir.parent_uuid)) {
-        if (dir.depth === 1) {
-          memo.push({...dir});
-        } else {
-          memo.push({
-            name: dir.category,
-            uuid: dir.parent_uuid,
-          });
-        }
+    let oldData = false;
+    const depths = _.groupBy(directories.map(item => {
+      if (!item.depth) {
+        oldData = true;
+        return {
+          ...item,
+          depth: item.name === item.category ? 1 : 2,
+        };
       }
-      return memo;
-    }, []);
+      return item;
+    }), 'depth');
+    let categories;
+    if (oldData) {
+      categories = directories.reduce((memo, dir) => {
+        if (!memo.find(item => item.name === dir.category)) {
+          if (dir.depth === 1) {
+            memo.push({...dir});
+          } else {
+            memo.push({
+              name: dir.category,
+              uuid: dir.parent_uuid,
+              document: dir.document,
+              locator: dir.locator,
+            });
+          }
+        }
+        return memo;
+      }, []);
+    } else {
+      categories = directories.reduce((memo, dir) => {
+        const foundCategory = memo.find(item => (item.uuid === dir.parent_uuid));
+        if (!dir.parent_uuid || !foundCategory) {
+          if (dir.depth === 1) {
+            memo.push({...dir});
+          } else {
+            memo.push({
+              name: dir.category,
+              uuid: dir.parent_uuid,
+            });
+          }
+        }
+        return memo;
+      }, []);
+    }
     
     depths[1] = categories;
     let formattedDirectories = [];
@@ -250,7 +307,7 @@ const CustomNav = withRouter((props) => {
       const currentDepth = depths[i - 1].map(item => {
         const subDocuments = [];
         depths[i].forEach(subDocument => {
-          if (subDocument.parent_uuid === item.uuid) {
+          if (!item.uuid ? subDocument.category === item.name : subDocument.parent_uuid === item.uuid) {
             subDocuments.push(subDocument);
           }
         });
@@ -262,10 +319,9 @@ const CustomNav = withRouter((props) => {
       depths[i - 1] = currentDepth;
     }
     formattedDirectories = [ ...depths[1] ];
-
     const directoryElements = formattedDirectories.map(cat =>
       renderCategory(cat),
-    );
+    ).filter(item => item);
     return directoryElements;
   };
   return <Nav embeddable className="help-nav" selectedKeys={selectedKeys} onSelect={ onSelect } aria-label="子菜单">
@@ -282,12 +338,13 @@ const App = (data) => {
     console.log(`Documents count > 20, auto change to lazyLoad mode`);
     lazyLoad = true;
   }
+  const firstDoc = directories.find(item => item && item.locator && item.locator !== '#');
   return (
     <Router>
       <div>
         <Route exact path={realData.view} render={(props) =>
           <Container {...props} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode} />}>
-          { directories && directories.length ? <Redirect from={realData.view} to={`${realData.view}/${directories[0].locator}`}/> : null}
+          { directories && directories.length ? <Redirect from={realData.view} to={`${realData.view}/${firstDoc ? firstDoc.locator : ''}`}/> : null}
         </Route>
         <Route exact path={`${realData.view}/:name`} render={(props) =>
           <Container {...props} lazyLoad={lazyLoad} showSearch={showSearch} data={data.data} darkMode={!!data.data.darkMode} />}/>

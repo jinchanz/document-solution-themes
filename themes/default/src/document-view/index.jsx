@@ -43,6 +43,37 @@ class DocumentView extends Component {
     this.content = null;
   }
 
+  componentDidMount() {
+    console.log('did mount');
+    const { doc, lazyLoad, locator } = this.props;
+    if (lazyLoad && locator) {
+      this.fetchDocument(locator);
+      return;
+    }
+    if (doc) {
+      this.setState({
+        doc,
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps, props) {
+    const { locator } = this.state;
+    const { locator: newLocator, doc, lazyLoad } = nextProps;
+    console.log('props: ', props);
+    console.log('newLocator: ', newLocator);
+    if (locator !== newLocator) {
+      if (lazyLoad) {
+        this.fetchDocument(newLocator);
+      } else {
+        this.setState({
+          locator,
+          doc,
+        });
+      }
+    }
+  }
+
   fetchDocument(locator) {
     if (!locator) {
       return;
@@ -51,6 +82,7 @@ class DocumentView extends Component {
     this.setState({
       loadingDocument: true,
       errorDocument: false,
+      locator,
     });
     axios
       .get(`${api}/${locator}`)
@@ -75,35 +107,6 @@ class DocumentView extends Component {
       });
   }
 
-  componentDidMount() {
-    const { doc, lazyLoad, locator } = this.props;
-    if (lazyLoad && locator) {
-      this.fetchDocument(locator);
-      return;
-    }
-    if (doc) {
-      this.setState({
-        doc,
-      });
-    }
-  }
-
-  componentWillReceiveProps(nextProps, props) {
-    const { locator } = props;
-    const { locator: newLocator, doc, lazyLoad } = nextProps;
-
-    if (locator !== newLocator) {
-      if (lazyLoad) {
-        this.fetchDocument(newLocator);
-      } else {
-        this.setState({
-          locator,
-          doc,
-        });
-      }
-    }
-  }
-
   render() {
     const { doc, loadingDocument, errorDocument, toc } = this.state;
     const { namespace, showEditor, baseUrl } = this.props;
@@ -114,7 +117,7 @@ class DocumentView extends Component {
       if (this.content && (!toc || (toc.locator !== doc.locator))) {
         this.setState({
           toc: {
-            doc: <div style={{ position: 'fixed', top: 100, right: 50 }}>
+            doc: <div className='document-anchor' style={{ position: 'fixed', top: 100, right: 50 }}>
               <Anchor style={{ width: 180 }} content={() => this.content} />
             </div>,
             locator: doc.locator,
