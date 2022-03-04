@@ -91,6 +91,25 @@
   "showEditor": false,
   "view": "",
   "token": "<your yuque token>",
-  "darkMode": false,
-  "logo": "https://i.ablula.tech/ablula.png"
+  "darkMode": true,
+  "blackColor": "#313437",
+  "headerHeight": 80,
+  "logo": "https://i.ablula.tech/ablula.png",
+  "menuDataSource": [
+    {
+      "label": "文档",
+      "target": "_self",
+      "url": "/doc"
+    },
+    {
+      "label": "协议",
+      "target": "_self",
+      "url": "http://lowcode-engine.cn/lowcode"
+    },
+    {
+      "label": "Github",
+      "target": "_blank",
+      "url": "https://github.com/alibaba/lowcode-engine"
+    }
+  ]
 }

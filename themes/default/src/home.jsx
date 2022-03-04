@@ -95,7 +95,11 @@ class Container extends React.Component {
       locator,
     } = this.state;
     const { data, showSearch, lazyLoad, darkMode } = this.props;
-    const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage, searchPlaceholder } = data;
+    // FIXME: 兼容
+    if (data.lightColor === '#ffffff00') {
+      data.lightColor = 'white';
+    }
+    const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage, searchPlaceholder, menuDataSource, headerHeight } = data;
     const { params } = this.props.match;
     if (!this.documents[locator]) {
       return <main style={{
@@ -109,7 +113,7 @@ class Container extends React.Component {
     const currentDocument = this.documents[locator].document;
     const selectedKeys = params && params.name ? [params.name] : [];
     if (onlyDoc) {
-      return <div style={{ background: '#fff', height: 'calc(100vh - 60px)', paddingRight: '230px'}}>
+      return <div style={{ background: '#fff', paddingRight: '230px'}}>
           {errorDirectories && (
               <Message title="Error" type="error">
                   {errorDirectories.message}
@@ -121,29 +125,55 @@ class Container extends React.Component {
     }
 
     return (
-      <Shell style={{ marginTop: noHeader ? -60 : 0, height: noHeader ? 'calc(100vh + 60px)' : '100vh' }}>
-        <Shell.Navigation
-          direction="hoz"
-          className="header"
-          style={{ background: darkMode ? (data.blackColor || 'black') : (data.lightColor || '#ffffff00') }}>
-            <Box spacing={40} direction="row" align="center" className="header-simple" width="1200px" style={{
-              margin: '0 auto',
+      <Shell style={{ height: '100vh' }}>
+        {
+          !noHeader ? <Shell.Navigation
+            direction="hoz"
+            className="header"
+            style={{ 
+              background: darkMode ? (data.blackColor || 'black') : (data.lightColor || 'white'),
+              borderBottom: '1px solid #E6E7EB',
+              height: headerHeight || 80,
             }}>
-                {this.header(logo, homepage)}
-                <Box justify="center" className="title">
-                  <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}><span className="header-title">{title}</span></a>
-                </Box>
-                {showSearch ? <Box justify="center" >
-                  <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
-                </Box> : null}
-            </Box>
-        </Shell.Navigation>
+            <div className='header-container'>
+              <Box spacing={40} direction="row" align="center" style={{ height: '100%' }}>
+                  {this.header(logo, homepage)}
+                  <Box justify="center" className="title">
+                    <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}><span className="header-title">{title}</span></a>
+                  </Box>
+                  {showSearch ? <Box justify="center" >
+                    <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
+                  </Box> : null}
+              </Box>
+              {
+                menuDataSource && menuDataSource.length ?
+                <Nav
+                  className="basic-nav"
+                  mode="popup"
+                  direction="hoz"
+                  type="line"
+                  defaultSelectedKeys={[menuDataSource[0].label]}
+                  triggerType="hover"
+                >
+                  {
+                    menuDataSource.map(item => {
+                      return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}><a href={item.url} target={item.target} >{item.label}</a></Item>;
+                    })
+                  }
+                </Nav> :
+                null
+              }
+            </div>
+          </Shell.Navigation> : null
+        }
         <Shell.LocalNavigation>
-          <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} />
+          <div style={{marginTop: noHeader ? 0 : ((headerHeight || 80) - 52)}}>
+            <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} />
+          </div>
         </Shell.LocalNavigation>
 
         <Shell.Content>
-          <div style={{ background: '#fff', paddingRight: '230px'}}>
+          <div style={{ background: '#fff', paddingRight: '230px', marginTop: noHeader ? 0 : ((headerHeight || 80) - 72)}}>
             {errorDirectories && (
               <Message title="Error" type="error">
                 {errorDirectories.message}
@@ -226,7 +256,7 @@ const CustomNav = withRouter((props) => {
         });
         return {
           ...item,
-          documents: [...subDocuments]
+          documents: [...subDocuments],
         };
       });
       depths[i - 1] = currentDepth;
@@ -237,10 +267,10 @@ const CustomNav = withRouter((props) => {
       renderCategory(cat),
     );
     return directoryElements;
-  }
+  };
   return <Nav embeddable className="help-nav" selectedKeys={selectedKeys} onSelect={ onSelect } aria-label="子菜单">
     {renderDirectories(directories)}
-  </Nav>
+  </Nav>;
 });
 
 const App = (data) => {
