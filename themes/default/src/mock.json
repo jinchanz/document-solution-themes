@@ -95,6 +95,12 @@
   "blackColor": "#313437",
   "headerHeight": 80,
   "logo": "https://i.ablula.tech/ablula.png",
+  "menuStyle": {
+    "fontSize": 14
+  },
+  "logoStyle": {
+    "paddingLeft": 20
+  },
   "menuDataSource": [
     {
       "label": "文档",

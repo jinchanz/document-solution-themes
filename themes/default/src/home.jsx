@@ -17,12 +17,24 @@ function getLocatorFromMatch(match) {
   return match && match.params && match.params.name;
 }
 
-function header(logo, view) {
-  return (<Box justify="center" className="header-logo">
-    <a href={path(`/${view}`)}>
+function renderLogo(logo, homepage, logoHref, logoStyle) {
+  const href = logoHref || homepage || '';
+  return <Box justify="center" className="header-logo" style={logoStyle}>
+    <a href={href.startsWith('http') ? href : path(`/${href}`)}>
       <img src={logo || '//img.alicdn.com/tfs/TB1pKookmzqK1RjSZFHXXb3CpXa-240-70.png'} alt="logo" />
     </a>
-  </Box>);
+  </Box>;
+}
+
+function renderTitle(title, homepage, titleHref, darkMode) {
+  const href = titleHref || homepage || '';
+  return <Box justify="center" className="title">
+  <a 
+    style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } 
+    href={href.startsWith('http') ? href : path(`/${href}`)}>
+    <span className="header-title">{title}</span>
+  </a>
+</Box>;
 }
 
 class Container extends React.Component {
@@ -95,7 +107,25 @@ class Container extends React.Component {
     if (data.lightColor === '#ffffff00') {
       data.lightColor = 'white';
     }
-    const { api, view, searchAPI, title, logo, onlyDoc, noHeader, homepage, searchPlaceholder, menuDataSource, headerHeight } = data;
+    const { 
+      api, 
+      view, 
+      searchAPI, 
+      hideLogo,
+      hideTitle,
+      title, 
+      logo, 
+      titleHref,
+      logoHref,
+      onlyDoc, 
+      noHeader, 
+      homepage, 
+      searchPlaceholder, 
+      menuDataSource, 
+      headerHeight,
+      menuStyle: originMenuStyle,
+      logoStyle,
+    } = data;
     const { params } = this.props.match;
     if (!this.documents[locator]) {
       return <main style={{
@@ -108,6 +138,13 @@ class Container extends React.Component {
     }
     const currentDocument = this.documents[locator].document;
     const selectedKeys = params && params.name ? [params.name] : [];
+    let menuStyle = {};
+    if (originMenuStyle) {
+      menuStyle = {
+        ...originMenuStyle,
+        color: (originMenuStyle.color || {})[darkMode ? 'dark' : 'light'],
+      };
+    }
     if (onlyDoc) {
       return <div className='document-container'>
           {errorDirectories && (
@@ -133,10 +170,8 @@ class Container extends React.Component {
             }}>
             <div className='header-container'>
               <Box spacing={40} direction="row" align="center" style={{ height: '100%' }}>
-                  {header(logo, homepage)}
-                  <Box justify="center" className="title">
-                    <a style={ { color: darkMode ? 'white' : 'black', textDecoration: 'none' } } href={path(`/${view}`)}><span className="header-title">{title}</span></a>
-                  </Box>
+                  {hideLogo ? null : renderLogo(logo, homepage, logoHref, logoStyle)}
+                  {hideTitle ? null : renderTitle(title, homepage, titleHref, darkMode)}
                   {showSearch ? <Box justify="center" className='header-search' >
                     <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
                   </Box> : null}
@@ -154,7 +189,11 @@ class Container extends React.Component {
                     >
                       {
                         menuDataSource.map(item => {
-                          return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}><a href={item.url} target={item.target} >{item.label}</a></Item>;
+                          return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}>
+                            <a href={item.url} target={item.target} >
+                              <span style={menuStyle}> {item.label} </span>
+                            </a>
+                          </Item>;
                         })
                       }
                     </Nav>
@@ -175,7 +214,9 @@ class Container extends React.Component {
                         {
                           menuDataSource.map(item => {
                             return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}>
-                              <a className='mobile-nav-item' href={item.url} target={item.target} >{item.label}</a>
+                              <a className='mobile-nav-item' href={item.url} target={item.target} >
+                                <span style={menuStyle}> {item.label} </span>
+                              </a>
                             </Item>;
                           })
                         }
