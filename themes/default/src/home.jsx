@@ -1,7 +1,8 @@
 import React from 'react';
 import { join } from 'path';
+import { keyBy } from 'lodash';
 import PropTypes from 'prop-types';
-import { keyBy, groupBy } from 'lodash';
+import Anchor from '@alifd/biz-anchor';
 import { Nav, Message, Shell, Box, Icon, Button } from '@alifd/next';
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
@@ -47,7 +48,6 @@ class Container extends React.Component {
   };
 
   state = {
-    showMobileNav: false,
   };
 
   constructor(props, context) {
@@ -60,21 +60,75 @@ class Container extends React.Component {
       return;
     }
     this.documents = keyBy(directories, dir => dir.locator);
+    const defaultMQuery = {
+      matches: window.innerWidth > 768 ? true : false,
+    };
     this.state = {
       view,
       locator,
       directories,
       errorDirectories: false,
+      showMobileNav: false,
+      mQuery: defaultMQuery,
+      ancillaryCollapse: !defaultMQuery.matches,
+      leftNavCollapse: !defaultMQuery.matches,
     };
+  }
+
+  toggleCollapse(position) {
+    const key = `${position}Collapse`;
+    const value = this.state[key];
+    this.setState({
+      [key]: !value
+    });
+  }
+
+  generateAnchor() {
+    const { locator, toc } = this.state;
+    setTimeout(() => {
+      this.content = document.getElementById(`document-content-${locator}`)
+      if (this.content && (!toc || (toc.locator !== locator))) {
+        this.setState({
+          toc: {
+            doc: <Anchor style={{ marginTop: 20 }} content={() => this.content} />,
+            locator,
+          },
+        });
+        const { hash } = location;
+        if (hash) {
+          location.href = hash;
+        }
+      }
+    });
   }
 
   componentDidMount() {
     const { locator, directories } = this.state;
+    const shellHeader = document.getElementsByClassName('next-shell-header')[0];
+    const headerHeight = this.props.data.headerHeight;
+    if (shellHeader) {
+      shellHeader.style.height = typeof +headerHeight === 'number' ? `${headerHeight}px` : headerHeight;
+    }
     if (!locator && directories && directories.length) {
       this.setState({
         locator: directories[0].locator,
       });
     }
+    this.generateAnchor();
+    let mediaQuery = window.matchMedia("(min-width: 768px)");
+    mediaQuery.addListener((matches) => {
+      this.setState({
+        mQuery: matches,
+        ancillaryCollapse: !matches.matches,
+        leftNavCollapse: !matches.matches,
+      });
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { locator } = this.state;
+    if (locator === prevState.locator) return;
+    this.generateAnchor();
   }
 
   componentWillReceiveProps(nextProps, props) {
@@ -102,7 +156,7 @@ class Container extends React.Component {
       locator,
     } = this.state;
     const { data, showSearch, lazyLoad, darkMode } = this.props;
-    const { showMobileNav } = this.state;
+    const { showMobileNav, toc, leftNavCollapse, ancillaryCollapse, mQuery } = this.state;
     // FIXME: 兼容
     if (data.lightColor === '#ffffff00') {
       data.lightColor = 'white';
@@ -158,7 +212,7 @@ class Container extends React.Component {
     }
 
     return (
-      <Shell style={{ height: '100vh' }}>
+      <Shell style={{ height: '100vh' }} >
         {
           !noHeader ? <Shell.Navigation
             direction="hoz"
@@ -229,10 +283,8 @@ class Container extends React.Component {
             </div>
           </Shell.Navigation> : null
         }
-        <Shell.LocalNavigation>
-          <div style={{marginTop: noHeader ? 0 : ((headerHeight || 80) - 52)}}>
-            <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} />
-          </div>
+        <Shell.LocalNavigation collapse={leftNavCollapse} onCollapseChange={this.toggleCollapse.bind(this, 'leftNav')}>
+          <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} isMobile={!mQuery.matches} toggleCollapse={this.toggleCollapse.bind(this)} />
         </Shell.LocalNavigation>
 
         <Shell.Content>
@@ -246,21 +298,30 @@ class Container extends React.Component {
                         namespace={data.namespace} showEditor={data.showEditor} doc={currentDocument} baseUrl={data.baseUrl} />
           </div>
         </Shell.Content>
+        <Shell.Ancillary collapse={ancillaryCollapse} onCollapseChange={this.toggleCollapse.bind(this, 'ancillary')}>
+          { 
+            toc ? toc.doc : null
+          }
+        </Shell.Ancillary>
       </Shell>
     );
   }
 }
 
 const CustomNav = withRouter((props) => {
-  const { selectedKeys, directories, history, view } = props;
+  const { selectedKeys, directories, history, view, isMobile, toggleCollapse } = props;
 
 
   const onSelect = ([key]) => {
+    if (isMobile) {
+      toggleCollapse('leftNav');
+    }
     if (key.match(/^http/)) {
       window.open(key);
     } else {
       history.push(key);
     }
+    
   };
 
   const renderCategory = ({ name, locator, documents = [] }) => {

@@ -44,7 +44,6 @@ class DocumentView extends Component {
   }
 
   componentDidMount() {
-    console.log('did mount');
     const { doc, lazyLoad, locator } = this.props;
     if (lazyLoad && locator) {
       this.fetchDocument(locator);
@@ -60,8 +59,6 @@ class DocumentView extends Component {
   componentWillReceiveProps(nextProps, props) {
     const { locator } = this.state;
     const { locator: newLocator, doc, lazyLoad } = nextProps;
-    console.log('props: ', props);
-    console.log('newLocator: ', newLocator);
     if (locator !== newLocator) {
       if (lazyLoad) {
         this.fetchDocument(newLocator);
@@ -111,25 +108,6 @@ class DocumentView extends Component {
     const { doc, loadingDocument, errorDocument, toc } = this.state;
     const { namespace, showEditor, baseUrl } = this.props;
     const yuqueBase = baseUrl && baseUrl.includes('api') && baseUrl.split('api')[0] || 'https:www.yuque.com/';
-    setTimeout(() => {
-      if (!doc) return;
-      if (!toc.doc || (toc.locator !== doc.locator)) this.content = document.getElementById(`document-content-${doc.locator}`);
-      if (this.content && (!toc || (toc.locator !== doc.locator))) {
-        this.setState({
-          toc: {
-            doc: <div className='document-anchor' style={{ position: 'fixed', top: 100, right: 50 }}>
-              <Anchor style={{ width: 180 }} content={() => this.content} />
-            </div>,
-            locator: doc.locator,
-          },
-        });
-        const { hash } = location;
-        if (hash) {
-          location.href = hash;
-        }
-      }
-    });
-
     return (
       <main className="wiki">
         {loadingDocument || !doc ? (

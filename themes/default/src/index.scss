@@ -90,17 +90,22 @@ body {
 }
 
 .document-container {
-  background: '#fff';
-  @media screen and (max-width: 1024px) {
-    padding-right: 0;
+  background: #fff;
+}
+
+.next-shell-light .next-shell-aside .next-shell-ancillary {
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    transform: translateX(-100%);
+    z-index: 1;
   }
-  padding-right: 230px;
+  width: 230px;
 }
 
 .next-shell-light .next-shell-aside .next-shell-localnavigation {
-  @media screen and (max-width: 600px) {
-    height: 100vh;
+  @media screen and (max-width: 768px) {
     position: absolute;
+    z-index: 1;
   }
   width: 283px;
   background: #fafafa;
