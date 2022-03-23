@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import { Loading, Message, Icon, Balloon } from '@alifd/next';
 
 import './index.scss';
-import Anchor from '@alifd/biz-anchor';
-
 class DocumentView extends Component {
   static propTypes = {
     locator: PropTypes.string,
@@ -43,8 +41,19 @@ class DocumentView extends Component {
     this.content = null;
   }
 
+  componentDidUpdate() {
+    const { loadingDocument, onRenderComplete } = this.props;
+    const { doc: stateDoc } = this.state;
+    if (!loadingDocument && stateDoc) {
+      typeof onRenderComplete === 'function' && onRenderComplete();
+    }
+  }
   componentDidMount() {
-    const { doc, lazyLoad, locator } = this.props;
+    const { doc, lazyLoad, locator, loadingDocument, onRenderComplete } = this.props;
+    const { doc: stateDoc } = this.state;
+    if (!loadingDocument && stateDoc) {
+      typeof onRenderComplete === 'function' && onRenderComplete();
+    }
     if (lazyLoad && locator) {
       this.fetchDocument(locator);
       return;

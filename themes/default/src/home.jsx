@@ -84,9 +84,9 @@ class Container extends React.Component {
   }
 
   generateAnchor() {
-    const { locator, toc } = this.state;
     setTimeout(() => {
-      this.content = document.getElementById(`document-content-${locator}`)
+      const { locator, toc } = this.state;
+      this.content = document.getElementById(`document-content-${locator}`);
       if (this.content && (!toc || (toc.locator !== locator))) {
         this.setState({
           toc: {
@@ -100,6 +100,10 @@ class Container extends React.Component {
         }
       }
     });
+  }
+
+  onDocumentRendered() {
+    this.generateAnchor();
   }
 
   componentDidMount() {
@@ -207,7 +211,9 @@ class Container extends React.Component {
               </Message>
           )}
           <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
-                      namespace={data.namespace} showEditor={data.showEditor} doc={currentDocument} baseUrl={data.baseUrl} />
+                      namespace={data.namespace} showEditor={data.showEditor} 
+                      doc={currentDocument} baseUrl={data.baseUrl}  onRenderComplete={this.onDocumentRendered.bind(this)}
+                      />
       </div>;
     }
 
@@ -295,7 +301,9 @@ class Container extends React.Component {
               </Message>
             )}
             <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
-                        namespace={data.namespace} showEditor={data.showEditor} doc={currentDocument} baseUrl={data.baseUrl} />
+                        namespace={data.namespace} showEditor={data.showEditor} 
+                        doc={currentDocument} baseUrl={data.baseUrl} onRenderComplete={this.onDocumentRendered.bind(this)}
+                        />
           </div>
         </Shell.Content>
         <Shell.Ancillary collapse={ancillaryCollapse} onCollapseChange={this.toggleCollapse.bind(this, 'ancillary')}>
