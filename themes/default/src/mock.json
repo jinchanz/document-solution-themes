@@ -256,6 +256,8 @@
   "blackColor": "#313437",
   "headerHeight": 80,
   "logo": "https://i.ablula.tech/ablula.png",
+	"contentMode": "fixWidth",
+	"contentWidth": 1200,
   "menuStyle": {
     "fontSize": 14
   },

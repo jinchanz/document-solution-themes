@@ -73,6 +73,9 @@ class Container extends React.Component {
       ancillaryCollapse: !defaultMQuery.matches,
       leftNavCollapse: !defaultMQuery.matches,
     };
+    this.leftNavRef = React.createRef();
+    this.ancillaryRef = React.createRef();
+    this.mediaQuery = window.matchMedia("(min-width: 768px)");
   }
 
   toggleCollapse(position) {
@@ -119,14 +122,8 @@ class Container extends React.Component {
       });
     }
     this.generateAnchor();
-    let mediaQuery = window.matchMedia("(min-width: 768px)");
-    mediaQuery.addListener((matches) => {
-      this.setState({
-        mQuery: matches,
-        ancillaryCollapse: !matches.matches,
-        leftNavCollapse: !matches.matches,
-      });
-    });
+    document.addEventListener("mousedown", this.handleClickOutside);
+    this.mediaQuery.addEventListener('change', this.handleMediaQueryChange);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -143,6 +140,43 @@ class Container extends React.Component {
       this.setState({
         locator: newLocator,
       });
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+    this.mediaQuery.removeEventListener("change", this.handleMediaQueryChange);
+  }
+
+  handleMediaQueryChange = (matches) => {
+    this.setState({
+      mQuery: matches,
+      ancillaryCollapse: !matches.matches,
+      leftNavCollapse: !matches.matches,
+    });
+  }
+
+  handleClickOutside = (event) => {
+    const leftNavRef = document.querySelector('.next-shell-localnavigation') || this.leftNavRef?.current;
+    const ancillaryRef = document.querySelector('.next-aside-ancillary') || this.ancillaryRef?.current;
+    const newState = {
+      hasChange: false
+    };
+    if (leftNavRef && !leftNavRef.contains(event.target)) {
+      if (!this.state.mQuery.matches) {
+        newState.hasChange = true;
+        newState.leftNavCollapse = true;
+      }
+    }
+    if (ancillaryRef && !ancillaryRef.contains(event.target)) {
+      if (!this.state.mQuery.matches) {
+        newState.hasChange = true;
+        newState.ancillaryCollapse = true;
+      }
+    }
+    if (newState.hasChange) {
+      delete newState.hasChange;
+      this.setState(newState);
     }
   }
 
@@ -183,6 +217,8 @@ class Container extends React.Component {
       headerHeight,
       menuStyle: originMenuStyle,
       logoStyle,
+      contentMode = 'stretch',
+      contentWidth = 1080
     } = data;
     const { params } = this.props.match;
     if (!this.documents[locator]) {
@@ -290,7 +326,9 @@ class Container extends React.Component {
           </Shell.Navigation> : null
         }
         <Shell.LocalNavigation collapse={leftNavCollapse} onCollapseChange={this.toggleCollapse.bind(this, 'leftNav')}>
-          <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} isMobile={!mQuery.matches} toggleCollapse={this.toggleCollapse.bind(this)} />
+          <div ref={this.leftNavRef}>
+            <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} isMobile={!mQuery.matches} toggleCollapse={this.toggleCollapse.bind(this)} />
+          </div>
         </Shell.LocalNavigation>
 
         <Shell.Content>
@@ -303,13 +341,12 @@ class Container extends React.Component {
             <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
                         namespace={data.namespace} showEditor={data.showEditor} 
                         doc={currentDocument} baseUrl={data.baseUrl} onRenderComplete={this.onDocumentRendered.bind(this)}
+                        contentMode={contentMode} contentWidth={contentWidth}
                         />
           </div>
         </Shell.Content>
         <Shell.Ancillary collapse={ancillaryCollapse} onCollapseChange={this.toggleCollapse.bind(this, 'ancillary')}>
-          { 
-            toc ? toc.doc : null
-          }
+          <div ref={this.ancillaryRef} > { toc ? toc.doc : null } </div>
         </Shell.Ancillary>
       </Shell>
     );

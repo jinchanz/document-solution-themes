@@ -115,10 +115,15 @@ class DocumentView extends Component {
 
   render() {
     const { doc, loadingDocument, errorDocument, toc } = this.state;
-    const { namespace, showEditor, baseUrl } = this.props;
+    const { namespace, showEditor, baseUrl, contentMode, contentWidth } = this.props;
     const yuqueBase = baseUrl && baseUrl.includes('api') && baseUrl.split('api')[0] || 'https:www.yuque.com/';
+    let realContentWidth, mainStyle = {};
+    if (contentMode === 'fixWidth') {
+      realContentWidth = contentWidth || 1080;
+      mainStyle.maxWidth = realContentWidth;
+    }
     return (
-      <main className="wiki">
+      <main className="wiki" style={mainStyle} >
         {loadingDocument || !doc ? (
           <div className="help-loading">
             <Loading className="loading" />

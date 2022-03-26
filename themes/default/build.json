@@ -4,7 +4,7 @@
     [
       "build-plugin-fusion",
       {
-        "themePackage": "@alifd/theme-2"
+        "themePackage": "@alifd/theme-ablula-document"
       }
     ],
     ["build-plugin-moment-locales", {

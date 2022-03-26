@@ -126,7 +126,7 @@ body {
 }
 
 .wiki {
-  @media screen and (max-width: 850px) {
+  @media screen and (max-width: 1024px) {
     padding: 0;
   }
   margin: 0 auto;
@@ -269,10 +269,12 @@ body {
 
 .wiki a {
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 .wiki img {
   max-width: 100%;
+  width: 100%;
   padding: 5px;
 }
 
@@ -285,13 +287,13 @@ body {
 
 .header-title,
 .header-search {
-  @media screen and (max-width: 850px) {
+  @media screen and (max-width: 600px) {
     display: none;
   }
 }
 
 .desktop-nav {
-  @media screen and (max-width: 850px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 }
@@ -300,13 +302,13 @@ body {
   .next-btn-ghost {
     border: none;
   }
-  @media screen and (min-width: 850px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
 }
 
 .mobile-nav-open {
-  @media screen and (min-width: 850px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
   .next-btn-ghost {
