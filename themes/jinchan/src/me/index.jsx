@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar, Box, Divider } from '@alifd/next';
 
-import DocumentView from '../document-view/index';
+import DocumentView from '../blog/index';
 import './index.scss';
 
 class Me extends Component {

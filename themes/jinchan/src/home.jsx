@@ -2,20 +2,15 @@ import React from 'react';
 import { join } from 'path';
 import PropTypes from 'prop-types';
 import { keyBy, groupBy } from 'lodash';
-import { Nav, Message, Shell, Box } from '@alifd/next';
+import { Nav, Message, Box } from '@alifd/next';
 import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom';
 
-import DocumentView from './document-view/index';
-import Posts from './posts/index';
 import Me from './me/index';
-import Layout from './container';
+import Layout from './layout';
+import Posts from './posts/index';
+import Blog from './blog/index';
 
-const path = p => join('', p);
-const { Item, SubNav } = Nav;
-
-import './index.scss';
-
-class Container extends React.Component {
+class Detail extends React.Component {
   static propTypes = {
     data: PropTypes.object,
     prefix: PropTypes.string,
@@ -44,20 +39,6 @@ class Container extends React.Component {
     };
   }
 
-  processDirectories(directories = []) {
-    const categoryOrder = directories.reduce((memo, dir) => {
-      if (!memo.includes(dir.category)) {
-        memo.push(dir.category);
-      }
-      return memo;
-    }, []);
-
-    return {
-      categoryMap: groupBy(directories, dir => dir.category),
-      categoryOrder,
-    };
-  }
-
   getLocatorFromMatch(match) {
     return match && match.params && match.params.name;
   }
@@ -82,67 +63,14 @@ class Container extends React.Component {
     }
   }
 
-  insertDividers(directoryElements) {
-    return directoryElements.reduce((memo, next, index, src) => {
-      memo.push(next);
-      if (index !== src.length - 1) {
-        // eslint-disable-next-line react/no-array-index-key
-        // memo.push(<Divider key={`divider ${index}`} />);
-      }
-      return memo;
-    }, []);
-  }
-
-  renderCategory(name, documents = []) {
-    const { prefix } = this.props;
-    if (!documents || !documents.length) {
-      return;
-    }
-    if (documents.length === 1) {
-      return <Item key={documents[0].locator}>
-        <Link to={`${prefix}${documents[0].locator}`}>{documents[0].name}</Link>
-      </Item>;
-    }
-
-    return (
-      <SubNav label={name} key={name}>
-        {documents.map(doc => (
-          <Item key={doc.locator}>
-            <Link to={`${prefix}${doc.locator}`}>{doc.name}</Link>
-          </Item>
-        ))}
-      </SubNav>
-    );
-  }
-
-  renderDirectories(directories = []) {
-    const { categoryMap, categoryOrder } = this.processDirectories(directories);
-    const directoryElements = categoryOrder.map(cat =>
-      this.renderCategory(cat, categoryMap[cat])
-    );
-    return this.insertDividers(directoryElements);
-  }
-
-  header(logo, view) {
-
-    return (<Box justify="center" className="header-logo">
-      <a href={path(`/${view}`)}>
-        <img src={logo || '//img.alicdn.com/tfs/TB1pKookmzqK1RjSZFHXXb3CpXa-240-70.png'} alt="logo" />
-      </a>
-    </Box>);
-  }
-
   render() {
     const {
-      directories,
       errorDirectories,
       locator,
     } = this.state;
-    const { data, showSearch, lazyLoad, darkMode, prefix } = this.props;
-    const { api, view, searchAPI, title, logo, onlyDoc, noHeader } = data;
-    const { params } = this.props.match;
+    const { data, showSearch, lazyLoad } = this.props;
+    const { api } = data;
     const currentDocument = this.documents[locator].document;
-    const selectedKeys = params && params.name ? [params.name] : [];
 
     return (
       <main>
@@ -151,7 +79,7 @@ class Container extends React.Component {
             {errorDirectories.message}
           </Message>
         )}
-        <DocumentView lazyLoad={lazyLoad} api={api} locator={locator} namespace={data.namespace} doc={currentDocument} showEditor={data.showEditor} />
+        <Blog lazyLoad={lazyLoad} api={api} locator={locator} namespace={data.namespace} doc={currentDocument} showEditor={data.showEditor} />
       </main>
     );
   }
@@ -187,9 +115,9 @@ const App = (data) => {
               <Me {...props} data={realData} />
           )}/>
           <Route exact path={`/*/:name`} render={(props) =>
-            <Container {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}/>
+            <Detail {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}/>
           <Route path={'/*/'} render={(props) =>
-            <Container {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}>
+            <Detail {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}>
             { directories && directories.length ? <Redirect to={`${'/blog/'}${directories[0].locator}`}/> : null}
           </Route>
         </Switch>
