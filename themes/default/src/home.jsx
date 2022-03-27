@@ -265,12 +265,17 @@ class Container extends React.Component {
               height: headerHeight || 80,
             }}>
             <div className='header-container'>
-              <Box spacing={40} direction="row" align="center" style={{ height: '100%' }}>
-                  {hideLogo ? null : renderLogo(logo, homepage, logoHref, logoStyle)}
-                  {hideTitle ? null : renderTitle(title, homepage, titleHref, darkMode)}
-                  {showSearch ? <Box justify="center" className='header-search' >
-                    <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
-                  </Box> : null}
+              <Box direction='row' align='center'>
+                  {/* { leftNavCollapse ? <Icon type="toggle-right" onClick={() => {
+                    this.toggleCollapse('leftNav');
+                  }} /> : null } */}
+                <Box spacing={40} direction="row" align="center" style={{ height: '100%' }}>
+                    {hideLogo ? null : renderLogo(logo, homepage, logoHref, logoStyle)}
+                    {hideTitle ? null : renderTitle(title, homepage, titleHref, darkMode)}
+                    {showSearch ? <Box justify="center" className='header-search' >
+                      <DocumentSearch view={view} searchAPI={searchAPI} darkMode={darkMode} placeholder={searchPlaceholder} />
+                    </Box> : null}
+                </Box>
               </Box>
               {
                 menuDataSource && menuDataSource.length ?
@@ -299,7 +304,9 @@ class Container extends React.Component {
                       <Button iconSize="large" onClick={this.toggleMobileNav} ghost={ darkMode ? 'dark' : 'light' }><Icon type="list" /> </Button>
                     </div> :
                     <div className="mobile-nav-open">
-                      <div className='mobile-nav-actions'>
+                      <div className='mobile-nav-actions' style={{
+                        height: headerHeight || 80,
+                      }}>
                         <Button iconSize="large" onClick={this.toggleMobileNav} ghost={ darkMode ? 'dark' : 'light' }><Icon type="close" /> </Button>
                       </div>
                       <Nav
@@ -328,6 +335,9 @@ class Container extends React.Component {
         <Shell.LocalNavigation collapse={leftNavCollapse} onCollapseChange={this.toggleCollapse.bind(this, 'leftNav')}>
           <div ref={this.leftNavRef}>
             <CustomNav selectedKeys={selectedKeys} directories={directories} view={this.state.view} isMobile={!mQuery.matches} toggleCollapse={this.toggleCollapse.bind(this)} />
+            <Button type="normal" onClick={this.toggleCollapse.bind(this, 'leftNav')} className={`custom-nav-trigger${leftNavCollapse ? '-collapse' : ''}`} iconSize="large" >
+              <Icon type={ leftNavCollapse ? "arrow-double-right" : "arrow-double-left" } />
+            </Button>
           </div>
         </Shell.LocalNavigation>
 
