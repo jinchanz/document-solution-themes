@@ -253,6 +253,16 @@ class Container extends React.Component {
       </div>;
     }
 
+    let defaultNav = menuDataSource && menuDataSource[0] && menuDataSource[0].url;
+    if (location.pathname && menuDataSource && menuDataSource.length) {
+      const currentMenu = menuDataSource.find(item => {
+        return location.pathname.includes(item.url);
+      });
+      if (currentMenu) {
+        defaultNav = currentMenu.url;
+      }
+    }
+
     return (
       <Shell style={{ height: '100vh' }} >
         {
@@ -285,12 +295,12 @@ class Container extends React.Component {
                       mode="popup"
                       direction="hoz"
                       type="line"
-                      defaultSelectedKeys={[menuDataSource[0].label]}
+                      defaultSelectedKeys={[defaultNav]}
                       triggerType="hover"
                     >
                       {
                         menuDataSource.map(item => {
-                          return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.label}>
+                          return <Item className={darkMode ? 'dark-nav-item' : ''} key={item.url}>
                             <a href={item.url} target={item.target} >
                               <span style={menuStyle}> {item.label} </span>
                             </a>
