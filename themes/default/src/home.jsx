@@ -199,7 +199,7 @@ class Container extends React.Component {
     if (data.lightColor === '#ffffff00') {
       data.lightColor = 'white';
     }
-    const { 
+    const {
       api, 
       view, 
       searchAPI, 
@@ -218,7 +218,7 @@ class Container extends React.Component {
       menuStyle: originMenuStyle,
       logoStyle,
       contentMode = 'stretch',
-      contentWidth = 1080
+      contentWidth = 1080,
     } = data;
     const { params } = this.props.match;
     if (!this.documents[locator]) {
@@ -256,7 +256,7 @@ class Container extends React.Component {
     let defaultNav = menuDataSource && menuDataSource[0] && menuDataSource[0].url;
     if (location.pathname && menuDataSource && menuDataSource.length) {
       const currentMenu = menuDataSource.find(item => {
-        return location.pathname.includes(item.url);
+        return !['', '/'].includes(item.url) && location.pathname.includes(item.url);
       });
       if (currentMenu) {
         defaultNav = currentMenu.url;

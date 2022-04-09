@@ -1,6 +1,6 @@
 {
-  "name": "@alifd/document-client",
-  "version": "0.2.9-beta.3",
+  "name": "@ablula/document-client",
+  "version": "0.2.9-beta.4",
   "description": "intro block",
   "files": [
     "src/",
