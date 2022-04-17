@@ -65,7 +65,7 @@ class Container extends React.Component {
             && <main className="footer"><Box>
                 <Divider/>
                 <Box direction={'row'} justify={'center'}>
-                Ablula &copy;{new Date().getFullYear()} 版权所有 |&nbsp;<a target="_blank" href="http: beian.miit.gov.cn/" >{userInfo.description.beian}</a>
+                Ablula &copy;{new Date().getFullYear()} 版权所有 |&nbsp;<a target="_blank" href="https://beian.miit.gov.cn" >{userInfo.description.beian}</a>
                 </Box>
               </Box>
             </main>

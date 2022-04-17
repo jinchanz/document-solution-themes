@@ -10,14 +10,14 @@ const DocumentView = (props) => {
     <main className="home">
       <ul>
         { posts.map(item =>
-            <li key={item.title}>
-              <Link to={`/blog/${item.slug}`}>
-                {item.title}
-              </Link>
-              <time>
-                {moment(item.first_published_at).fromNow()}
-              </time>
-            </li>,
+            <Link to={`/blog/${item.slug}`}>
+              <li key={item.title}>
+                  {item.title}
+                <time>
+                  {moment(item.first_published_at || item.created_at).fromNow()}
+                </time>
+              </li>
+            </Link>
           ) 
         }
       </ul>
