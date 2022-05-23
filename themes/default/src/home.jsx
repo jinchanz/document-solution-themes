@@ -2,12 +2,12 @@ import React from 'react';
 import { join } from 'path';
 import { keyBy } from 'lodash';
 import PropTypes from 'prop-types';
-import Anchor from '@alifd/biz-anchor';
 import { Nav, Message, Shell, Box, Icon, Button } from '@alifd/next';
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
-import DocumentSearch from './document-search/index';
+import Anchor from './anchor/lib';
 import DocShowNew from './document-view/index';
+import DocumentSearch from './document-search/index';
 
 import './index.scss';
 
@@ -78,37 +78,6 @@ class Container extends React.Component {
     this.mediaQuery = window.matchMedia("(min-width: 768px)");
   }
 
-  toggleCollapse(position) {
-    const key = `${position}Collapse`;
-    const value = this.state[key];
-    this.setState({
-      [key]: !value
-    });
-  }
-
-  generateAnchor() {
-    setTimeout(() => {
-      const { locator, toc } = this.state;
-      this.content = document.getElementById(`document-content-${locator}`);
-      if (this.content && (!toc || (toc.locator !== locator))) {
-        this.setState({
-          toc: {
-            doc: <Anchor style={{ marginTop: 20 }} content={() => this.content} />,
-            locator,
-          },
-        });
-        const { hash } = location;
-        if (hash) {
-          location.href = hash;
-        }
-      }
-    });
-  }
-
-  onDocumentRendered() {
-    this.generateAnchor();
-  }
-
   componentDidMount() {
     const { locator, directories } = this.state;
     const shellHeader = document.getElementsByClassName('next-shell-header')[0];
@@ -126,12 +95,6 @@ class Container extends React.Component {
     this.mediaQuery.addEventListener('change', this.handleMediaQueryChange);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { locator } = this.state;
-    if (locator === prevState.locator) return;
-    this.generateAnchor();
-  }
-
   componentWillReceiveProps(nextProps, props) {
     const locator = getLocatorFromMatch(props.match);
     const newLocator = getLocatorFromMatch(nextProps.match);
@@ -143,9 +106,19 @@ class Container extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { locator } = this.state;
+    if (locator === prevState.locator) return;
+    this.generateAnchor();
+  }
+
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside);
     this.mediaQuery.removeEventListener("change", this.handleMediaQueryChange);
+  }
+
+  onDocumentRendered() {
+    this.generateAnchor();
   }
 
   handleMediaQueryChange = (matches) => {
@@ -184,6 +157,33 @@ class Container extends React.Component {
     const { showMobileNav } = this.state;
     this.setState({
       showMobileNav: !showMobileNav,
+    });
+  }
+
+  toggleCollapse(position) {
+    const key = `${position}Collapse`;
+    const value = this.state[key];
+    this.setState({
+      [key]: !value,
+    });
+  }
+
+  generateAnchor() {
+    setTimeout(() => {
+      const { locator, toc } = this.state;
+      this.content = document.getElementById(`document-content-${locator}`);
+      if (this.content && (!toc || (toc.locator !== locator))) {
+        this.setState({
+          toc: {
+            doc: <Anchor style={{ marginTop: 20 }} content={() => this.content} />,
+            locator,
+          },
+        });
+        const { hash } = location;
+        if (hash) {
+          location.href = hash;
+        }
+      }
     });
   }
 
@@ -247,7 +247,7 @@ class Container extends React.Component {
               </Message>
           )}
           <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
-                      namespace={data.namespace} showEditor={data.showEditor} 
+                      namespace={data.namespace} showEditor={data.showEditor} showMeta={data.showMeta}
                       doc={currentDocument} baseUrl={data.baseUrl}  onRenderComplete={this.onDocumentRendered.bind(this)}
                       />
       </div>;
@@ -361,7 +361,7 @@ class Container extends React.Component {
             <DocShowNew lazyLoad={lazyLoad} api={api} locator={locator}
                         namespace={data.namespace} showEditor={data.showEditor} 
                         doc={currentDocument} baseUrl={data.baseUrl} onRenderComplete={this.onDocumentRendered.bind(this)}
-                        contentMode={contentMode} contentWidth={contentWidth}
+                        contentMode={contentMode} contentWidth={contentWidth} showMeta={data.showMeta}
                         />
           </div>
         </Shell.Content>

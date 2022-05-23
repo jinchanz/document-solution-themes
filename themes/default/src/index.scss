@@ -1,4 +1,6 @@
 
+@import './anchor/lib/index.scss';
+
 body {
   margin: 0;
   font-family: Roboto,"PingFang SC","Helvetica Neue",Arial,Helvetica,sans-serif;
@@ -309,9 +311,9 @@ body {
 .wiki pre {
   margin: 16px 0;
   padding: 12px 20px;
-  color: #314659;
+  // color: #314659;
   font-size: 12px;
-  background: #f2f4f5;
+  // background: #f2f4f5;
   border-radius: 3px;
   overflow: auto;
   direction: ltr;
@@ -796,12 +798,12 @@ body {
     background: #dee8fc;
   }
   .lake-content .ne-codeblock {
-    color: #595959;
+    // color: #595959;
     margin: 0;
     padding: 15px;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
-    background: #f9f9f9;
+    // background: #f9f9f9;
   }
   .lake-content .ne-hr {
     margin: 18px 0;

@@ -1,6 +1,6 @@
 {
   "name": "@ablula/document-client",
-  "version": "0.2.9-beta.4",
+  "version": "0.2.9",
   "description": "intro block",
   "files": [
     "src/",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@alib/build-scripts": "^0.1.8",
+    "@alifd/theme-ablula-document": "^0.4.0",
     "@ice/screenshot": "^0.1.1",
     "build-plugin-block": "^1.0.0",
     "build-plugin-fusion": "^0.1.0",

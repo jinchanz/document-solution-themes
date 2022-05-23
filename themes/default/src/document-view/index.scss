@@ -14,3 +14,45 @@
     display: none;
   }
 }
+
+.document__title {
+  margin-bottom: 28px;
+  display: flex;
+  align-items: baseline;
+  span {
+    font-size: 28px;
+  }
+  .editor {
+    margin-left: 8px;
+    a {
+      color: #666666
+    }
+  }
+}
+
+.document-meta {
+  color: #8a8f8d;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid $color-fill1-4;
+  margin-top: 28px;
+  padding: 10px 0;
+  
+  .update-info {
+    font-style: italic;
+  }
+  .common {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    &-item {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+}
+

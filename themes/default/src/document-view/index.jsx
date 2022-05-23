@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Loading, Message, Icon, Balloon } from '@alifd/next';
 
 import './index.scss';
+
 class DocumentView extends Component {
   static propTypes = {
     locator: PropTypes.string,
@@ -41,13 +42,6 @@ class DocumentView extends Component {
     this.content = null;
   }
 
-  componentDidUpdate() {
-    const { loadingDocument, onRenderComplete } = this.props;
-    const { doc: stateDoc } = this.state;
-    if (!loadingDocument && stateDoc) {
-      typeof onRenderComplete === 'function' && onRenderComplete();
-    }
-  }
   componentDidMount() {
     const { doc, lazyLoad, locator, loadingDocument, onRenderComplete } = this.props;
     const { doc: stateDoc } = this.state;
@@ -77,6 +71,14 @@ class DocumentView extends Component {
           doc,
         });
       }
+    }
+  }
+
+  componentDidUpdate() {
+    const { loadingDocument, onRenderComplete } = this.props;
+    const { doc: stateDoc } = this.state;
+    if (!loadingDocument && stateDoc) {
+      typeof onRenderComplete === 'function' && onRenderComplete();
     }
   }
 
@@ -115,9 +117,9 @@ class DocumentView extends Component {
 
   render() {
     const { doc, loadingDocument, errorDocument, toc } = this.state;
-    const { namespace, showEditor, baseUrl, contentMode, contentWidth } = this.props;
+    const { namespace, showEditor, baseUrl, contentMode, contentWidth, showMeta } = this.props;
     const yuqueBase = baseUrl && baseUrl.includes('api') && baseUrl.split('api')[0] || 'https:www.yuque.com/';
-    let realContentWidth, mainStyle = {};
+    let realContentWidth; const mainStyle = {};
     if (contentMode === 'fixWidth') {
       realContentWidth = contentWidth || 1080;
       mainStyle.maxWidth = realContentWidth;
@@ -130,12 +132,16 @@ class DocumentView extends Component {
           </div>
         ) : (
           <div>
-            <h1 id="document-title" className="document__title">
-              {doc.title}
-              {showEditor && <Balloon trigger={<a rel="noopener noreferrer" target="_blank" href={`${yuqueBase}${namespace}/${doc.locator}`} style={{ marginLeft: 20, color: '#666666' }}><Icon size="small" type='edit'/></a>} closable={false}>
+            <div id="document-title" className="document__title">
+              <span>
+                {doc.title}
+              </span>
+              <div className='editor'>
+                {showEditor && <Balloon.Tooltip trigger={<a rel="noopener noreferrer" target="_blank" href={`${yuqueBase}${namespace}/${doc.locator}`} ><Icon size="small" type='edit'/></a>} closable={false}>
                   在语雀中编辑
-              </Balloon>}
-            </h1>
+              </Balloon.Tooltip>}
+              </div>
+            </div>
             <div className="document__main">
               <div
                 id={`document-content-${doc.locator}`}
@@ -146,6 +152,38 @@ class DocumentView extends Component {
                 (toc.locator === doc.locator) && toc.doc
               }
             </div>
+            {
+              showMeta ? <div className='document-meta'>
+                <div className="common" direction="row" spacing={10}>
+                  <Balloon.Tooltip trigger={
+                      <div className="common-item">
+                        <Icon type="readquatity" size="small" />
+                        <span>{doc.hits || 0}</span>
+                      </div>
+                    } 
+                    closable={false}
+                    align='t'
+                    >
+                    阅读量
+                  </Balloon.Tooltip>
+                  <Balloon.Tooltip trigger={
+                      <div className="common-item">
+                        <Icon type="text" size="small" />
+                        <span>{doc.word_count}</span>
+                      </div>
+                    } 
+                    closable={false}
+                    align='t'
+                    >
+                    文章字数
+                  </Balloon.Tooltip>
+                </div>
+                <div className='update-info'>
+                  <strong>{doc.creator}</strong> 最后修改于 <strong>{new Date(doc.updated_at).toLocaleDateString()}</strong>
+                </div>
+              </div>
+              : null
+            }
           </div>
         )}
 
