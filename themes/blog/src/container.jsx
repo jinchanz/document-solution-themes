@@ -36,7 +36,7 @@ class Container extends React.Component {
 
   render() {
     const { data, showSearch, darkMode, prefix } = this.props;
-    const { view, searchAPI, title, logo, onlyDoc, noHeader, userInfo } = data;
+    const { view, searchAPI, title, logo, onlyDoc, noHeader, userInfo, disableMe, disableBlog, disableHome } = data;
 
     return (
       <Shell style={{ marginTop: noHeader || onlyDoc ? -60 : 0, height: noHeader || onlyDoc ? 'calc(100vh + 60px)' : '100vh' }}>
@@ -64,9 +64,9 @@ class Container extends React.Component {
                 selectedKeys={this.props.defaultSelectedKeys}
                 triggerType="hover"
               >
-                <Item key="home"><a id="homepage" href={path('/')}>首页</a></Item>
-                <Item key="blog"><a href={path('/blog')}>博客</a></Item>
-                <Item key="me"><a href={path('/me')}>关于</a></Item>
+                { !disableHome ? <Item key="home"><a id="homepage" href={path('/')}>首页</a></Item> : null }
+                { !disableBlog ? <Item key="blog"><a href={path('/blog')}>博客</a></Item> : null }
+                { !disableMe ? <Item key="me"><a href={path('/me')}>关于</a></Item> : null }
               </Nav>
             </Box>
         </Shell.Navigation>
