@@ -1,17 +1,18 @@
 import React from 'react';
 import { join } from 'path';
 import PropTypes from 'prop-types';
-import { Nav, Divider, Shell, Box } from '@alifd/next';
+import { Nav, Divider, Box } from '@alifd/next';
 import { Link } from 'react-router-dom';
+
+import './index.scss';
 
 const path = p => join('', p);
 const { Item } = Nav;
 
-import './index.scss';
-
 class Container extends React.Component {
   static propTypes = {
     data: PropTypes.object,
+    // eslint-disable-next-line react/no-unused-prop-types
     prefix: PropTypes.string,
   };
 
@@ -19,13 +20,9 @@ class Container extends React.Component {
     data: {},
     prefix: '/',
   };
-  constructor(props, context) {
-    super(props, context);
 
-  }
-
+  // eslint-disable-next-line class-methods-use-this
   header(logo, view) {
-
     return (<Box justify="center" className="header-logo">
       <a href={path(`/${view}`)}>
         <img src={logo || '//img.alicdn.com/tfs/TB1pKookmzqK1RjSZFHXXb3CpXa-240-70.png'} alt="logo" />
@@ -34,8 +31,8 @@ class Container extends React.Component {
   }
 
   render() {
-    const { data, showSearch, darkMode, prefix } = this.props;
-    const { view, searchAPI, title, logo, onlyDoc, noHeader, userInfo } = data;
+    const { data, darkMode } = this.props;
+    const { view, title, userInfo } = data;
 
     return (
       <>
@@ -64,8 +61,8 @@ class Container extends React.Component {
             userInfo && userInfo.description && userInfo.description.beian && !this.props.defaultSelectedKeys.includes('blog')
             && <main className="footer"><Box>
                 <Divider/>
-                <Box direction={'row'} justify={'center'}>
-                Ablula &copy;{new Date().getFullYear()} 版权所有 |&nbsp;<a target="_blank" href="https://beian.miit.gov.cn" >{userInfo.description.beian}</a>
+                <Box direction="row" justify="center">
+                Ablula &copy;{new Date().getFullYear()} 版权所有 |&nbsp;<a target="_blank" rel="noopener noreferrer" href="https://beian.miit.gov.cn" >{userInfo.description.beian}</a>
                 </Box>
               </Box>
             </main>

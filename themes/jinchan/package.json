@@ -1,6 +1,6 @@
 {
   "name": "@ablula/blog-jinchan",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "blog theme for ablula document",
   "files": [
     "src/",
@@ -23,6 +23,7 @@
     "@alifd/biz-anchor": "^1.1.7",
     "@alifd/next": "^1.19.23",
     "axios": ">=0.21.1",
+    "gitalk": "^1.8.0",
     "highlight-words-core": "^1.2.2",
     "moment": "^2.24.0",
     "prop-types": "^15.5.8",

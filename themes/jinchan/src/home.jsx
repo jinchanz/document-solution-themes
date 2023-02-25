@@ -1,9 +1,10 @@
 import React from 'react';
-import { join } from 'path';
 import PropTypes from 'prop-types';
-import { keyBy, groupBy } from 'lodash';
-import { Nav, Message, Box } from '@alifd/next';
-import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom';
+import { keyBy } from 'lodash';
+import { Message } from '@alifd/next';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import 'gitalk/dist/gitalk.css';
+import GitalkComponent from "gitalk/dist/gitalk-component";
 
 import Me from './me/index';
 import Layout from './layout';
@@ -17,13 +18,17 @@ class Detail extends React.Component {
   };
 
   static defaultProps = {
-    data: {},
+    data: {
+      gitalkConfig: {},
+    },
     prefix: '/',
   };
+
   constructor(props, context) {
     super(props, context);
     const { data, prefix } = this.props;
     const { directories } = data;
+    // eslint-disable-next-line no-underscore-dangle
     const _directories = directories.filter(document => document.locator !== 'me');
     const locator = props.match.params.name || (_directories && _directories[0] && _directories[0].locator);
     if (!locator) {
@@ -34,15 +39,18 @@ class Detail extends React.Component {
     this.state = {
       locator,
       directories: _directories,
+      // eslint-disable-next-line react/no-unused-state
       loadingDirectories: false,
       errorDirectories: false,
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getLocatorFromMatch(match) {
     return match && match.params && match.params.name;
   }
 
+  // eslint-disable-next-line react/sort-comp
   componentWillReceiveProps(nextProps, props) {
     const locator = this.getLocatorFromMatch(props.match);
     const newLocator = this.getLocatorFromMatch(nextProps.match);
@@ -68,8 +76,8 @@ class Detail extends React.Component {
       errorDirectories,
       locator,
     } = this.state;
-    const { data, showSearch, lazyLoad } = this.props;
-    const { api } = data;
+    const { data, lazyLoad } = this.props;
+    const { api, gitalkConfig } = data;
     const currentDocument = this.documents[locator].document;
 
     return (
@@ -80,6 +88,7 @@ class Detail extends React.Component {
           </Message>
         )}
         <Blog lazyLoad={lazyLoad} api={api} locator={locator} namespace={data.namespace} doc={currentDocument} showEditor={data.showEditor} />
+        <GitalkComponent options={gitalkConfig} />
       </main>
     );
   }
@@ -102,11 +111,11 @@ const App = (data) => {
     selectedKey = 'me';
   }
 
-  const prefix = realData.view.slice(-1) === '/' ? realData.view : (realData.view + '/');
+  // const prefix = realData.view.slice(-1) === '/' ? realData.view : (`${realData.view  }/`);
 
   return (
     <BrowserRouter>
-      <Layout prefix={'/blog/'} defaultSelectedKeys={[selectedKey]} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!data.data.darkMode}>
+      <Layout prefix="/blog/" defaultSelectedKeys={[selectedKey]} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!data.data.darkMode}>
         <Switch>
           <Route exact path="/" render={(props =>
             <Posts {...props} posts={realData && realData.documents && realData.documents.filter(item => item.slug !== 'me') || []} />
@@ -114,10 +123,10 @@ const App = (data) => {
           <Route path="/me" render={(props =>
               <Me {...props} data={realData} />
           )}/>
-          <Route exact path={`/*/:name`} render={(props) =>
-            <Detail {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}/>
-          <Route path={'/*/'} render={(props) =>
-            <Detail {...props} prefix={'/blog/'} lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}>
+          <Route exact path="/*/:name" render={(props) =>
+            <Detail {...props} prefix="/blog/" lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}/>
+          <Route path="/*/" render={(props) =>
+            <Detail {...props} prefix="/blog/" lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}>
             { directories && directories.length ? <Redirect to={`${'/blog/'}${directories[0].locator}`}/> : null}
           </Route>
         </Switch>

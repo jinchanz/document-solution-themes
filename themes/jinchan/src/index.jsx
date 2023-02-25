@@ -3,5 +3,6 @@ import App from './home';
 import mockData from './mock.json';
 
 export default function ExampleBlock() {
+  // eslint-disable-next-line no-underscore-dangle
   return <App data={window.__INITIAL_STATE__ || mockData}/>;
 }
