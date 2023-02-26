@@ -10,6 +10,7 @@ import Me from './me/index';
 import Layout from './layout';
 import Posts from './posts/index';
 import Blog from './blog/index';
+import Chat from './chat';
 
 class Detail extends React.Component {
   static propTypes = {
@@ -109,6 +110,8 @@ const App = (data) => {
     selectedKey = 'blog';
   } else if (href.includes('/me')) {
     selectedKey = 'me';
+  } else if (href.includes('/chat')) {
+    selectedKey = 'chat';
   }
 
   // const prefix = realData.view.slice(-1) === '/' ? realData.view : (`${realData.view  }/`);
@@ -122,6 +125,9 @@ const App = (data) => {
           )}/>
           <Route path="/me" render={(props =>
               <Me {...props} data={realData} />
+          )}/>
+          <Route path="/chat" render={(() =>
+              <Chat />
           )}/>
           <Route exact path="/*/:name" render={(props) =>
             <Detail {...props} prefix="/blog/" lazyLoad={lazyLoad} showSearch={showSearch} data={realData} darkMode={!!realData.darkMode} />}/>

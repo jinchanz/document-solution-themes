@@ -49,6 +49,7 @@ class Container extends React.Component {
                 triggerType="hover"
               >
                 <Item key="home"><Link id="homepage" to={path('/')}>博客</Link></Item>
+                <Item key="chat"><Link id="chat" to={path('/chat')}>好玩的</Link></Item>
                 {/* <Item key="blog"><a href={path('/blog')}>博客</a></Item> */}
                 <Item key="me"><Link id="me" to={path('/me')}>关于</Link></Item>
               </Nav>
