@@ -127,6 +127,18 @@ body {
   border-bottom-color: transparent;
 }
 
+html {
+  --link-color: #333333;
+}
+
+.next-nav.next-line .next-nav-item.next-menu-item.next-selected.next-nav-item {
+  transition: background-color 150ms ease-in 0s;
+  font-weight: bold;
+  color: var(--link-color);
+  text-decoration: none;
+  border-bottom: 1px solid black;
+}
+
 .next-nav.next-line .next-nav-item.next-menu-item.next-selected {
   transition: background-color 150ms ease-in 0s;
   font-weight: bold;

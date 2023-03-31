@@ -30,6 +30,7 @@ body {
           text-overflow: ellipsis;
           margin: auto;
           color: #777;
+          min-width: 90px;
         }
       }
     }
@@ -50,6 +51,7 @@ body {
             margin-left: 4px;
             font-size: inherit;
             color: rgb(91, 91, 91);
+            min-width: 90px;
           }
         }
       }

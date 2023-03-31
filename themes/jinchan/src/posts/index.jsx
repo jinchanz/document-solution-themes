@@ -14,7 +14,7 @@ const DocumentView = (props) => {
               <li key={item.title}>
                   {item.title}
                 <time>
-                  {moment(item.first_published_at || item.created_at).fromNow()}
+                  {moment(item.first_published_at || item.created_at).format('L')}
                 </time>
               </li>
             </Link>

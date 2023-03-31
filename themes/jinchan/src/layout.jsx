@@ -32,7 +32,7 @@ class Container extends React.Component {
 
   render() {
     const { data, darkMode } = this.props;
-    const { view, title, userInfo } = data;
+    const { view, title, userInfo, menuDataSource } = data;
 
     return (
       <>
@@ -48,10 +48,11 @@ class Container extends React.Component {
                 defaultSelectedKeys={this.props.defaultSelectedKeys}
                 triggerType="hover"
               >
-                <Item key="home"><Link id="homepage" to={path('/')}>博客</Link></Item>
-                <Item key="chat"><Link id="chat" to={path('/chat')}>好玩的</Link></Item>
-                {/* <Item key="blog"><a href={path('/blog')}>博客</a></Item> */}
-                <Item key="me"><Link id="me" to={path('/me')}>关于</Link></Item>
+                {
+                  menuDataSource && menuDataSource.length ? menuDataSource.map(menu => {
+                    return <Item key={ menu.key }><Link id={ menu.key } to={path(menu.path)}>{menu.name}</Link></Item>
+                  }) : null
+                }
               </Nav>
             </Box>
           </header>
